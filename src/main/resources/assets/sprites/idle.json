@@ -1,0 +1,87 @@
+{
+  "id": "idle",
+  "msPerFrame": 5,
+  "frameData": [
+    {
+      "texture": "assets/textures/idle.png",
+      "position": {
+        "x": 36,
+        "y": 48
+      },
+      "width": 20,
+      "height": 34
+    },
+    {
+      "texture": "assets/textures/idle.png",
+      "position": {
+        "x": 132,
+        "y": 48
+      },
+      "width": 20,
+      "height": 34
+    },
+    {
+      "texture": "assets/textures/idle.png",
+      "position": {
+        "x": 228,
+        "y": 48
+      },
+      "width": 20,
+      "height": 34
+    },
+    {
+      "texture": "assets/textures/idle.png",
+      "position": {
+        "x": 324,
+        "y": 48
+      },
+      "width": 20,
+      "height": 34
+    },
+    {
+      "texture": "assets/textures/idle.png",
+      "position": {
+        "x": 420,
+        "y": 48
+      },
+      "width": 20,
+      "height": 34
+    },
+    {
+      "texture": "assets/textures/idle.png",
+      "position": {
+        "x": 516,
+        "y": 48
+      },
+      "width": 20,
+      "height": 34
+    },
+    {
+      "texture": "assets/textures/idle.png",
+      "position": {
+        "x": 612,
+        "y": 48
+      },
+      "width": 20,
+      "height": 34
+    },
+    {
+      "texture": "assets/textures/idle.png",
+      "position": {
+        "x": 708,
+        "y": 48
+      },
+      "width": 20,
+      "height": 34
+    },
+    {
+      "texture": "assets/textures/idle.png",
+      "position": {
+        "x": 804,
+        "y": 48
+      },
+      "width": 20,
+      "height": 34
+    }
+  ]
+}

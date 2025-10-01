@@ -1,6 +1,8 @@
-package org.mangorage.paradise;
+package org.mangorage.paradise.world.tile;
 
-import org.mangorage.paradise.core.Tile;
+import org.mangorage.paradise.core.game.tile.Tile;
+import org.mangorage.paradise.core.util.Pos;
+import org.mangorage.paradise.core.util.Size;
 
 import java.awt.*;
 import java.util.Random;
@@ -9,36 +11,27 @@ public class TestTile implements Tile {
     private static final Color[] colors = new Color[]{Color.RED, Color.BLUE, Color.ORANGE};
     private static final Random random = new Random();
 
-    private final int x;
-    private final int y;
+
+    private final Size size = new Size(32, 32);
+    private final Pos pos;
+
 
     private int ticks = 0;
     private Color selectedColor = colors[0];
 
 
-    public TestTile(int x, int y) {
-        this.x = x;
-        this.y = y;
+    public TestTile(Pos pos) {
+        this.pos = pos;
     }
 
     @Override
-    public int getX() {
-        return x;
+    public Pos getPos() {
+        return pos;
     }
 
     @Override
-    public int getY() {
-        return y;
-    }
-
-    @Override
-    public int getWidth() {
-        return 64;
-    }
-
-    @Override
-    public int getHeight() {
-        return 64;
+    public Size getSize() {
+        return size;
     }
 
     @Override

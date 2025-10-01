@@ -1,7 +1,11 @@
 package org.mangorage.paradise;
 
-import org.mangorage.paradise.core.GameCanvas;
-import org.mangorage.paradise.core.KeyEventType;
+import org.mangorage.paradise.core.asset.AssetManager;
+import org.mangorage.paradise.core.asset.SpriteManager;
+import org.mangorage.paradise.core.game.Game;
+import org.mangorage.paradise.core.game.GameCanvas;
+import org.mangorage.paradise.core.keybind.KeyBindManager;
+import org.mangorage.paradise.core.keybind.KeyEventType;
 import org.mangorage.paradise.world.World;
 
 import javax.swing.*;
@@ -10,7 +14,13 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
 
-public final class Game extends Canvas implements GameCanvas {
+public final class GameImpl extends Canvas implements Game, GameCanvas {
+
+    private static Game game;
+
+    public static Game getInstance() {
+        return game;
+    }
 
     private boolean running;
     private Thread gameThread;
@@ -18,9 +28,13 @@ public final class Game extends Canvas implements GameCanvas {
     private final int TARGET_UPS = 30;
     private final int TARGET_FPS = 10_000;
 
-    private final World world = new World();
+    private AssetManager assetManager;
+    private KeyBindManager keyBindManager;
+    private SpriteManager spriteManager;
 
-    Game() {
+    private World world;
+
+    GameImpl() {
         JFrame frame = new JFrame("Grid Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 600);
@@ -46,14 +60,21 @@ public final class Game extends Canvas implements GameCanvas {
         });
 
         // Triple buffering for smoother graphics
-        this.createBufferStrategy(4);
+        this.createBufferStrategy(3);
     }
 
-    public void start() {
+    void start() {
         if (running) return;
         running = true;
         gameThread = new Thread(this::run, "GameLoop");
         gameThread.start();
+    }
+
+    void init() {
+        assetManager = new AssetManager();
+        keyBindManager = new KeyBindManager();
+        spriteManager = new SpriteManager();
+        world = new World();
     }
 
     public void stop() {
@@ -131,8 +152,29 @@ public final class Game extends Canvas implements GameCanvas {
         }
     }
 
+    @Override
+    public AssetManager getAssetManager() {
+        return assetManager;
+    }
+
+    @Override
+    public KeyBindManager getKeyBindManager() {
+        return keyBindManager;
+    }
+
+    @Override
+    public SpriteManager getSpriteManager() {
+        return spriteManager;
+    }
+
+
     public static void main(String[] args) {
-        Game instance = new Game();
+        GameImpl instance = new GameImpl();
+        game = instance;
+        instance.init();
+
+        Game.getInstance().getSpriteManager().loadJson("assets/sprites/idle.json");
+
         instance.start();
     }
 }

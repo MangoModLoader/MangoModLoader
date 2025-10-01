@@ -1,4 +1,4 @@
-package org.mangorage.paradise.core;
+package org.mangorage.paradise.core.game.tile;
 
 import org.mangorage.paradise.core.util.Pos;
 import org.mangorage.paradise.core.util.Size;
