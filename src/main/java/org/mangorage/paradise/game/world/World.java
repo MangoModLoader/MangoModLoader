@@ -1,13 +1,13 @@
-package org.mangorage.paradise.world;
+package org.mangorage.paradise.game.world;
 
 import org.mangorage.paradise.core.game.Game;
 import org.mangorage.paradise.core.keybind.DefaultKeyBind;
 import org.mangorage.paradise.core.keybind.KeyBindManager;
 import org.mangorage.paradise.core.util.Pos;
 import org.mangorage.paradise.core.util.Size;
-import org.mangorage.paradise.world.tile.AnimatedTile;
-import org.mangorage.paradise.world.tile.CharacterTile;
-import org.mangorage.paradise.world.tile.TestTile;
+import org.mangorage.paradise.game.world.tile.AnimatedTile;
+import org.mangorage.paradise.game.world.tile.CharacterTile;
+import org.mangorage.paradise.game.world.tile.TestTile;
 import org.mangorage.paradise.core.game.GameCanvas;
 import org.mangorage.paradise.core.keybind.KeyEventType;
 import org.mangorage.paradise.core.game.tile.Tile;

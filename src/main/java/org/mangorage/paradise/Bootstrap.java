@@ -1,15 +1,21 @@
 package org.mangorage.paradise;
 
 import org.mangorage.paradise.core.loader.GameURLClassloader;
+import org.mangorage.paradise.core.loader.JPMSGameClassloader;
+import org.mangorage.paradise.game.GameImpl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.module.Configuration;
+import java.lang.module.ModuleFinder;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public final class Bootstrap {
 
@@ -51,11 +57,6 @@ public final class Bootstrap {
         final var codeSource = GameImpl.class.getProtectionDomain().getCodeSource();
         jars.add(codeSource.getLocation());
 
-        if (!codeSource.getLocation().getFile().contains(".jar")) {
-            final var path = Path.of(codeSource.getLocation().toURI()).getParent().getParent().getParent().resolve("resources/main");
-            jars.add(path.toUri().toURL());
-        }
-
         libraries.forEach(library -> {
             try {
                 jars.add(
@@ -66,20 +67,59 @@ public final class Bootstrap {
             }
         });
 
-        URL[] urls = jars.toArray(URL[]::new);
+        final var parent = ModuleLayer.boot();
+        final var moduleCfg = Configuration.resolve(
+                ModuleFinder.of(
+                        jars.stream()
+                                .map(url -> {
+                                    try {
+                                        return Path.of(url.toURI());
+                                    } catch (URISyntaxException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                })
+                                .toArray(Path[]::new)
+                ),
+                List.of(
+                        parent.configuration()
+                ),
+                ModuleFinder.of(
 
-        final var parent = Thread.currentThread().getContextClassLoader().getParent();
-        GameURLClassloader classloader = new GameURLClassloader(urls, parent);
+                ),
+                Set.of(
+                        "minersparadise"
+                )
+        );
+
+        var classloader = new JPMSGameClassloader(moduleCfg.modules(), Thread.currentThread().getContextClassLoader().getParent());
+        final var moduleLayerController = ModuleLayer.defineModules(moduleCfg, List.of(parent), s -> classloader);
+        final var moduleLayer = moduleLayerController.layer();
 
         Thread.currentThread().setContextClassLoader(classloader);
 
-        Class<?> clazz = Class.forName("org.mangorage.paradise.GameImpl", false, classloader);
+        classloader.load(moduleLayer, moduleLayerController);
 
-        // Grab the main method
-        Method mainMethod = clazz.getMethod("main", String[].class);
+        callMain("org.mangorage.paradise.game.GameImpl", args, moduleLayer.findModule("minersparadise").get());
+    }
 
-        // Call it with an empty args array (or pass your own args)
-        mainMethod.invoke(null, (Object) args);
+
+
+    public static void callMain(String className, String[] args, Module module) {
+        try {
+            Class<?> clazz = Class.forName(className, false, module.getClassLoader());
+            Method mainMethod = clazz.getMethod("main", String[].class);
+
+            // Make sure it's static and public
+            if (!java.lang.reflect.Modifier.isStatic(mainMethod.getModifiers())) {
+                throw new IllegalStateException("Main method is not static, are you high?");
+            }
+
+            // Invoke the main method with a godawful cast
+            mainMethod.invoke(null, (Object) args);
+        } catch (Throwable e) {
+            e.printStackTrace();
+            throw new RuntimeException("Couldn't reflectively call main because something exploded.", e);
+        }
     }
 
 

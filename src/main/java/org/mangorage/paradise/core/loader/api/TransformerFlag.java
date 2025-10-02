@@ -1,0 +1,12 @@
+package org.mangorage.paradise.core.loader.api;
+
+
+public enum TransformerFlag {
+    NO_REWRITE,
+    SIMPLE_REWRITE,
+    FULL_REWRITE;
+
+    public TransformResult of(byte[] classData) {
+        return new TransformResult(classData, this);
+    }
+}

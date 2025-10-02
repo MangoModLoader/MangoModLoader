@@ -1,4 +1,4 @@
-package org.mangorage.paradise;
+package org.mangorage.paradise.game;
 
 import org.mangorage.paradise.core.DataLoader;
 import org.mangorage.paradise.core.asset.AssetManager;
@@ -7,7 +7,7 @@ import org.mangorage.paradise.core.game.Game;
 import org.mangorage.paradise.core.game.GameCanvas;
 import org.mangorage.paradise.core.keybind.KeyBindManager;
 import org.mangorage.paradise.core.keybind.KeyEventType;
-import org.mangorage.paradise.world.World;
+import org.mangorage.paradise.game.world.World;
 
 import javax.swing.*;
 import java.awt.*;

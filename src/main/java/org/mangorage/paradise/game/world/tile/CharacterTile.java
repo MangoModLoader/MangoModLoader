@@ -1,4 +1,4 @@
-package org.mangorage.paradise.world.tile;
+package org.mangorage.paradise.game.world.tile;
 
 import org.mangorage.paradise.core.game.Game;
 import org.mangorage.paradise.core.game.tile.Tile;
