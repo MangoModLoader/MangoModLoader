@@ -1,7 +1,6 @@
-package org.mangorage.paradise;
+package org.mangorage.boot;
 
-import org.mangorage.paradise.core.loader.JPMSGameClassloader;
-import org.mangorage.paradise.game.GameImpl;
+import org.mangorage.boot.loader.JPMSGameClassloader;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,7 +52,7 @@ public final class Bootstrap {
 
         List<URL> jars = new ArrayList<>();
 
-        final var codeSource = GameImpl.class.getProtectionDomain().getCodeSource();
+        final var codeSource = Bootstrap.class.getProtectionDomain().getCodeSource();
         jars.add(codeSource.getLocation());
 
         libraries.forEach(library -> {

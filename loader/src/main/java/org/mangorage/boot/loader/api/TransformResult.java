@@ -1,3 +1,3 @@
-package org.mangorage.paradise.core.loader.api;
+package org.mangorage.boot.loader.api;
 
 public record TransformResult(byte[] classData, TransformerFlag flag) {}

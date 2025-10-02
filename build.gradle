@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id "net.minecraftforge.jarjar" version "0.1.0"
 }
 
 group = 'org.mangorage'
@@ -9,11 +10,41 @@ repositories {
     mavenCentral()
 }
 
+jarJar.register()
+
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
-    implementation("com.google.code.gson:gson:2.11.0")
+    implementation 'com.google.code.gson:gson:2.11.0'
+
+
+    jarJar(project(":game")) {
+        jarJar.configure(it) {
+            module {
+                group = 'game'
+            }
+            version = '1.0.0'
+        }
+    }
+
+    jarJar(project(":loader")) {
+        jarJar.configure(it) {
+            module {
+                group = 'loader'
+            }
+            version = '2.0.0'
+        }
+    }
+
+    jarJar("com.google.code.gson:gson:2.11.0") {
+        jarJar.configure(it) {
+            module {
+                group = 'library'
+            }
+            version = '2.11.0'
+        }
+    }
 
     java {
         modularity.inferModulePath = true
@@ -34,7 +65,7 @@ test {
 jar {
     manifest {
         attributes(
-                'Main-Class': 'org.mangorage.paradise.Bootstrap'
+                'Main-Class': 'org.mangorage.boot.Boot'
         )
     }
 }
@@ -56,20 +87,30 @@ tasks.register('mergeModule') {
 
 task runGame(type: JavaExec) {
     group = 'application'
-    description = "Runs the main class from build/run"
+    description = "Runs the built game jar (debuggable)"
 
     def runDir = file("$buildDir/run")
+    def jarFile = file("$buildDir/libs/${project.name}-${version}-all.jar")
 
-    // Make sure the directory exists
     doFirst {
         if (!runDir.exists()) {
             runDir.mkdirs()
         }
+        if (!jarFile.exists()) {
+            throw new GradleException("Jar not built yet! Run 'gradle build' first.")
+        }
     }
 
-    mainClass.set('org.mangorage.paradise.Bootstrap')
     workingDir = runDir
 
-    // Include the classes and runtime dependencies
-    classpath = files(runDir) + files(sourceSets.main.runtimeClasspath)
+    // Instead of classpath + mainClass, we just tell it "run this jar"
+    mainClass = "-jar"
+    args = [jarFile]
+
+    // Optional: enable remote debugging
+    jvmArgs = [
+            "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
+    ]
 }
+
+runGame.dependsOn build

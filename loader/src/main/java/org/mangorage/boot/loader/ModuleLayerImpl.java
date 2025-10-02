@@ -1,7 +1,7 @@
-package org.mangorage.paradise.core.loader;
+package org.mangorage.boot.loader;
 
 
-import org.mangorage.paradise.core.loader.api.IModuleLayer;
+import org.mangorage.boot.loader.api.IModuleLayer;
 
 public final class ModuleLayerImpl implements IModuleLayer {
     private final ModuleLayer layer;

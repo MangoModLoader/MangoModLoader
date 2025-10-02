@@ -1,4 +1,4 @@
-package org.mangorage.paradise.core.loader;
+package org.mangorage.boot.loader;
 
 import java.io.IOException;
 import java.lang.module.ModuleReader;

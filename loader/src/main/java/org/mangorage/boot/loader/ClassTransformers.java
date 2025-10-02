@@ -1,9 +1,9 @@
-package org.mangorage.paradise.core.loader;
+package org.mangorage.boot.loader;
 
 
-import org.mangorage.paradise.core.loader.api.IClassTransformer;
-import org.mangorage.paradise.core.loader.api.TransformResult;
-import org.mangorage.paradise.core.loader.api.TransformerFlag;
+import org.mangorage.boot.loader.api.IClassTransformer;
+import org.mangorage.boot.loader.api.TransformResult;
+import org.mangorage.boot.loader.api.TransformerFlag;
 
 import java.util.List;
 import java.util.Map;

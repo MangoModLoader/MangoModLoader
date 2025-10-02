@@ -1,5 +1,6 @@
 package org.mangorage.paradise.game;
 
+import org.mangorage.boot.loader.api.IMangoLoader;
 import org.mangorage.paradise.core.DataLoader;
 import org.mangorage.paradise.core.asset.AssetManager;
 import org.mangorage.paradise.core.asset.SpriteManager;
