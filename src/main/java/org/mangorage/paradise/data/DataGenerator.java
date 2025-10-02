@@ -13,9 +13,9 @@ public final class DataGenerator {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     public static void main(String[] args) {
-        final List<FrameData> list = new ArrayList<>();
+        final List<FrameData> idleFrames = new ArrayList<>();
         for (int i = 0; i < 9; i++) {
-            list.add(
+            idleFrames.add(
                     new FrameData(
                             "assets/textures/idle.png",
                             new Pos(36 + (i * 96), 48),
@@ -24,17 +24,57 @@ public final class DataGenerator {
             );
         }
 
+        final List<FrameData> runFrames = new ArrayList<>();
+        runFrames.addAll(
+                List.of(
+                        new FrameData(
+                            "assets/textures/run.png",
+                            Pos.of(39, 52),
+                            26, 29
+                        ),
+                        new FrameData(
+                            "assets/textures/run.png",
+                            Pos.of(131, 52),
+                            30, 29
+                        ),
+                        new FrameData(
+                                "assets/textures/run.png",
+                                Pos.of(227, 51),
+                                32, 27
+                        ),
+                        new FrameData(
+                                "assets/textures/run.png",
+                                Pos.of(324, 50),
+                                32, 26
+                        ),
+                        new FrameData(
+                                "assets/textures/run.png",
+                                Pos.of(421, 50),
+                                32, 28
+                        ),
+                        new FrameData(
+                                "assets/textures/run.png",
+                                Pos.of(518, 52),
+                                30, 29
+                        )
+                )
+        );
 
-        SpriteData data = new SpriteData(
-                "idle",
+        SpriteData dataIdle = new SpriteData(
+                "wizard/idle",
                 5L,
-                list
+                idleFrames
+        );
+
+        SpriteData dataRun = new SpriteData(
+                "wizard/run",
+                5L,
+                runFrames
         );
 
         System.out.println(
-                GSON.toJson(data)
+                GSON.toJson(dataRun)
         );
-
 
     }
 }

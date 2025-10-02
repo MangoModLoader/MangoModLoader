@@ -1,6 +1,5 @@
 package org.mangorage.paradise;
 
-import org.mangorage.paradise.core.loader.GameURLClassloader;
 import org.mangorage.paradise.core.loader.JPMSGameClassloader;
 import org.mangorage.paradise.game.GameImpl;
 

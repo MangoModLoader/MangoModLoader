@@ -9,9 +9,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public final class CharacterTile implements Tile {
-
-    private final BufferedImage image = Game.getInstance().getAssetManager().getInternalImage("assets/textures/idle.png");
-
     @Override
     public Pos getPos() {
         return Pos.of(50, 10);
@@ -29,18 +26,18 @@ public final class CharacterTile implements Tile {
     @Override
     public void update() {
         ticks++;
-        if (ticks % 40 == 0) {
+
             frame++;
-            if (frame >= 9)
+            if (frame >= 6)
                 frame = 0;
-        }
+
     }
 
     @Override
     public void render(Graphics g) {
         // 96 pixels apart
         g.drawImage(
-                Game.getInstance().getSpriteManager().getSprite("idle", frame)
+                Game.getInstance().getSpriteManager().getSprite("wizard/run", frame)
                         .getScaledInstance(getSize().width(), getSize().height(), BufferedImage.TYPE_INT_ARGB),
                 0, 0, null
         );

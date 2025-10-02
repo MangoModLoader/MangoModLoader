@@ -1,0 +1,60 @@
+{
+  "id": "wizard/run",
+  "msPerFrame": 5,
+  "frameData": [
+    {
+      "texture": "assets/textures/run.png",
+      "position": {
+        "x": 39,
+        "y": 52
+      },
+      "width": 26,
+      "height": 29
+    },
+    {
+      "texture": "assets/textures/run.png",
+      "position": {
+        "x": 131,
+        "y": 52
+      },
+      "width": 30,
+      "height": 29
+    },
+    {
+      "texture": "assets/textures/run.png",
+      "position": {
+        "x": 227,
+        "y": 51
+      },
+      "width": 32,
+      "height": 27
+    },
+    {
+      "texture": "assets/textures/run.png",
+      "position": {
+        "x": 324,
+        "y": 50
+      },
+      "width": 32,
+      "height": 26
+    },
+    {
+      "texture": "assets/textures/run.png",
+      "position": {
+        "x": 421,
+        "y": 50
+      },
+      "width": 32,
+      "height": 28
+    },
+    {
+      "texture": "assets/textures/run.png",
+      "position": {
+        "x": 518,
+        "y": 52
+      },
+      "width": 30,
+      "height": 29
+    }
+  ]
+}

@@ -16,7 +16,7 @@ module minersparadise {
     exports org.mangorage.paradise.game.world.tile;
     exports org.mangorage.paradise.game;
 
-    opens assets.sprites;
+    opens assets.sprites.wizard;
     opens assets.textures;
 
     uses org.mangorage.paradise.core.loader.api.IClassTransformer;
