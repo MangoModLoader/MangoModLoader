@@ -13,9 +13,37 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
-    implementation("com.google.code.gson:gson:2.11.0")
+    compileOnly("com.google.code.gson:gson:2.11.0")
 }
 
 test {
     useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'org.mangorage.paradise.Bootstrap'
+        )
+    }
+}
+
+task runGame(type: JavaExec) {
+    group = 'application'
+    description = "Runs the main class from build/run"
+
+    def runDir = file("$buildDir/run")
+
+    // Make sure the directory exists
+    doFirst {
+        if (!runDir.exists()) {
+            runDir.mkdirs()
+        }
+    }
+
+    mainClass.set('org.mangorage.paradise.Bootstrap')
+    workingDir = runDir
+
+    // Include the classes and runtime dependencies
+    classpath = files(runDir) + files(sourceSets.main.runtimeClasspath)
 }

@@ -1,5 +1,6 @@
 package org.mangorage.paradise;
 
+import org.mangorage.paradise.core.DataLoader;
 import org.mangorage.paradise.core.asset.AssetManager;
 import org.mangorage.paradise.core.asset.SpriteManager;
 import org.mangorage.paradise.core.game.Game;
@@ -172,9 +173,7 @@ public final class GameImpl extends Canvas implements Game, GameCanvas {
         GameImpl instance = new GameImpl();
         game = instance;
         instance.init();
-
-        Game.getInstance().getSpriteManager().loadJson("assets/sprites/idle.json");
-
+        DataLoader.initSpritesData();
         instance.start();
     }
 }
