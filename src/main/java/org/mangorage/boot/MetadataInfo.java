@@ -7,7 +7,7 @@ public record MetadataInfo(String layer, String jar) {
         String marker = "jarjar/";
         int index = path.indexOf(marker);
         if (index == -1) {
-            return null; // or path itself if you prefer
+            return path; // or path itself if you prefer
         }
         return path.substring(index + marker.length());
     }

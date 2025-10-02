@@ -1,5 +1,6 @@
 package org.mangorage.boot;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -9,6 +10,7 @@ import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.DirectoryStream;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -105,7 +107,7 @@ public final class Boot {
                     in.transferTo(out);
                 }
 
-                System.out.println("Extracted " + internalPath + " -> " + outJar);
+                System.out.println("Extracted Jar -> " + outJar);
             }
         }
     }
@@ -128,6 +130,19 @@ public final class Boot {
         });
     }
 
+    public static List<Path> findJarsInFolder(Path folder) throws IOException {
+        List<Path> jars = new ArrayList<>();
+
+        try (DirectoryStream<Path> stream = Files.newDirectoryStream(folder)) {
+            for (Path entry : stream) {
+                if (Files.isRegularFile(entry) && entry.getFileName().toString().toLowerCase().endsWith(".jar")) {
+                    jars.add(entry);
+                }
+            }
+        }
+
+        return jars;
+    }
 
     public static void main(String[] args) throws IOException, URISyntaxException {
         deleteFolder(Path.of("classpath"));
@@ -149,13 +164,38 @@ public final class Boot {
             layers.computeIfAbsent(info.layer(), id -> new ArrayList<>()).add(info);
         });
 
-        System.out.println(new String(metadata));
-
         extractJars(
                 Path.of(Boot.class.getProtectionDomain().getCodeSource().getLocation().toURI()),
                 jars,
                 Path.of("classpath")
         );
+
+
+        findJarsInFolder(Path.of("mods").toAbsolutePath()).forEach(mod -> {
+            try {
+                final var modMetadata = fetchFile(
+                        mod.toString(),
+                        "META-INF/jarjar/metadata.json"
+                );
+
+                final var jarsInMod = parseGroupsAndPaths(new String(modMetadata));
+
+                extractJars(
+                        mod,
+                        jarsInMod,
+                        Path.of("classpath")
+                );
+
+                jars.addAll(jarsInMod);
+
+                jars.add(new MetadataInfo("mod", mod.toString()));
+            } catch (IOException e) {
+                System.out.println("Unable to find any JarInJars for mod jar " + mod);
+            }
+        });
+
+
+
 
         final var parent = ModuleLayer.boot();
         final var loaderJar = layers.get("loader").getFirst().resolve(Path.of("classpath").toAbsolutePath());

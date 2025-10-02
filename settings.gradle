@@ -11,4 +11,5 @@ rootProject.name = 'MinersParadise'
 
 include 'game'
 include 'loader'
+include 'examplemod'
 

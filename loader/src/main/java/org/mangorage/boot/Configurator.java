@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public final class Configurator {
     private static final Map<String, List<String>> jars = new HashMap<>();
@@ -27,6 +28,18 @@ public final class Configurator {
             throw new IllegalStateException("Cannot find game");
 
 
+        final var gameJars = new ArrayList<>(game.stream()
+                .map(Path::of)
+                .toList()
+        );
+
+        jars.getOrDefault("mod", List.of())
+                .forEach(info -> {
+                    gameJars.add(Path.of(info));
+                });
+
+
+
         final var moduleCfg = Configuration.resolveAndBind(
                 ModuleFinder.of(
                         libraries.stream()
@@ -36,11 +49,7 @@ public final class Configurator {
                 List.of(
                         parent.getLayer().configuration()
                 ),
-                ModuleFinder.of(
-                        game.stream()
-                                .map(Path::of)
-                                .toArray(Path[]::new)
-                ),
+                ModuleFinder.of(gameJars.toArray(Path[]::new)),
                 Set.of("minersparadise")
         );
 
