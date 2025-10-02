@@ -17,8 +17,14 @@ module minersparadise {
     exports org.mangorage.paradise.game;
 
     opens assets.sprites.wizard;
+    opens assets.sprites;
+
     opens assets.textures;
+    opens assets.textures.furnace;
 
     uses org.mangorage.paradise.core.loader.api.IClassTransformer;
     uses org.mangorage.paradise.core.loader.api.IModuleConfigurator;
+    uses org.mangorage.paradise.IMod;
+
+    provides org.mangorage.paradise.IMod with org.mangorage.paradise.ModExample;
 }

@@ -50,7 +50,15 @@ public final class World {
         tiles.add(new TestTile(Pos.of(1, 1)));
         tiles.add(new AnimatedTile(Pos.of(1, 10), Size.of(64, 64),
                 Game.getInstance().getAssetManager().getInternalImage("assets/textures/example.png")));
-        tiles.add(new CharacterTile());
+
+        tiles.add(new CharacterTile(Pos.of(10, 10)));
+        for (int i = 0; i < 1000 ; i++) {
+            tiles.add(
+                    new CharacterTile(
+                            Pos.of(10 + i, 10)
+                    )
+            );
+        }
     }
 
     public void render(GameCanvas canvas, Graphics2D g, int frames, int updates) {

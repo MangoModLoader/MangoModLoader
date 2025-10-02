@@ -67,7 +67,7 @@ public final class Bootstrap {
         });
 
         final var parent = ModuleLayer.boot();
-        final var moduleCfg = Configuration.resolve(
+        final var moduleCfg = Configuration.resolveAndBind(
                 ModuleFinder.of(
                         jars.stream()
                                 .map(url -> {
@@ -91,7 +91,7 @@ public final class Bootstrap {
         );
 
         var classloader = new JPMSGameClassloader(moduleCfg.modules(), Thread.currentThread().getContextClassLoader().getParent());
-        final var moduleLayerController = ModuleLayer.defineModules(moduleCfg, List.of(parent), s -> classloader);
+        final var moduleLayerController = ModuleLayer.defineModulesWithManyLoaders(moduleCfg, List.of(parent), classloader);
         final var moduleLayer = moduleLayerController.layer();
 
         Thread.currentThread().setContextClassLoader(classloader);

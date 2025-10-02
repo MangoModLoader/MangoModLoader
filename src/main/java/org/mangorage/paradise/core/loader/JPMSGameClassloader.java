@@ -1,5 +1,6 @@
 package org.mangorage.paradise.core.loader;
 
+import org.mangorage.paradise.IMod;
 import org.mangorage.paradise.core.loader.api.IClassTransformer;
 import org.mangorage.paradise.core.loader.api.IMangoLoader;
 import org.mangorage.paradise.core.loader.api.IModuleConfigurator;
@@ -56,6 +57,13 @@ public final class JPMSGameClassloader extends SecureClassLoader implements IMan
     public void load(final ModuleLayer moduleLayer, final ModuleLayer.Controller controller) {
         loadModuleConfiguration(moduleLayer, controller);
         loadTransformers();
+
+        ServiceLoader.load(IMod.class)
+                .stream()
+                .map(ServiceLoader.Provider::get)
+                .forEach(c -> {
+                    System.out.println(c);
+                });
     }
 
     void loadModuleConfiguration(final ModuleLayer moduleLayer, final ModuleLayer.Controller controller) {

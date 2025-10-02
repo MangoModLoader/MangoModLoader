@@ -9,18 +9,23 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public final class CharacterTile implements Tile {
+    private final Pos pos;
+
+    public CharacterTile(Pos pos) {
+        this.pos = pos;
+    }
+
     @Override
     public Pos getPos() {
-        return Pos.of(50, 10);
+        return pos;
     }
 
     @Override
     public Size getSize() {
-        return Size.of(32 * 2, 32 * 4);
+        return Size.of(32, 64);
     }
 
     private int ticks = 0;
-
     private int frame = 0;
 
     @Override
@@ -29,7 +34,7 @@ public final class CharacterTile implements Tile {
 
             frame++;
             if (frame >= 6)
-                frame = 0;
+                frame = 1;
 
     }
 
@@ -37,7 +42,7 @@ public final class CharacterTile implements Tile {
     public void render(Graphics g) {
         // 96 pixels apart
         g.drawImage(
-                Game.getInstance().getSpriteManager().getSprite("wizard/run", frame)
+                Game.getInstance().getSpriteManager().getSprite("furnace", frame)
                         .getScaledInstance(getSize().width(), getSize().height(), BufferedImage.TYPE_INT_ARGB),
                 0, 0, null
         );

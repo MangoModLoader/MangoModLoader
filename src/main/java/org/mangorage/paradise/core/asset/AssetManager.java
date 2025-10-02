@@ -26,7 +26,7 @@ public final class AssetManager {
             try {
                 return ImageIO.read(is);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new IllegalStateException("Failed to find: " + path, e);
             }
         });
     }
