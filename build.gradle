@@ -1,3 +1,5 @@
+import  net.minecraftforge.jarjar.gradle.JarJar;
+
 plugins {
     id 'java'
     id "net.minecraftforge.jarjar" version "0.1.0"
@@ -90,14 +92,11 @@ task runGame(type: JavaExec) {
     description = "Runs the built game jar (debuggable)"
 
     def runDir = file("$buildDir/run")
-    def jarFile = file("$buildDir/libs/${project.name}-${version}-all.jar")
+    def jarFile = tasks.named('jarJar', JarJar).flatMap(JarJar.&getArchiveFile).get()
 
     doFirst {
         if (!runDir.exists()) {
             runDir.mkdirs()
-        }
-        if (!jarFile.exists()) {
-            throw new GradleException("Jar not built yet! Run 'gradle build' first.")
         }
     }
 
@@ -112,5 +111,3 @@ task runGame(type: JavaExec) {
             "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
     ]
 }
-
-runGame.dependsOn build

@@ -1,5 +1,6 @@
 module loader {
     requires java.desktop;
+    requires java.naming;
 
     exports org.mangorage.boot.loader.api;
     exports org.mangorage.boot;

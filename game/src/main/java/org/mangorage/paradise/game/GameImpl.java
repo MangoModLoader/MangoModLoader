@@ -1,6 +1,6 @@
 package org.mangorage.paradise.game;
 
-import org.mangorage.boot.loader.api.IMangoLoader;
+import org.mangorage.paradise.IMod;
 import org.mangorage.paradise.core.DataLoader;
 import org.mangorage.paradise.core.asset.AssetManager;
 import org.mangorage.paradise.core.asset.SpriteManager;
@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferStrategy;
+import java.util.ServiceLoader;
 
 public final class GameImpl extends Canvas implements Game, GameCanvas {
 
@@ -175,6 +176,11 @@ public final class GameImpl extends Canvas implements Game, GameCanvas {
         game = instance;
         instance.init();
         DataLoader.initSpritesData();
+
+        ServiceLoader.load(GameImpl.class.getModule().getLayer(), IMod.class)
+                .stream()
+                .forEach(ServiceLoader.Provider::get);
+
         instance.start();
     }
 }

@@ -4,6 +4,9 @@ module minersparadise {
     requires com.google.gson;
 
 
+
+    exports org.mangorage.paradise;
+
     exports org.mangorage.paradise.core.asset.sprite;
     exports org.mangorage.paradise.core.asset;
     exports org.mangorage.paradise.core.game;
@@ -21,4 +24,7 @@ module minersparadise {
 
     opens assets.textures;
     opens assets.textures.furnace;
+
+    uses org.mangorage.paradise.IMod;
+    provides org.mangorage.paradise.IMod with org.mangorage.paradise.ModExample;
 }
