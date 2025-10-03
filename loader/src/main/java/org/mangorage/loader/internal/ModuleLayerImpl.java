@@ -1,7 +1,7 @@
-package org.mangorage.boot.loader;
+package org.mangorage.loader.internal;
 
 
-import org.mangorage.boot.loader.api.IModuleLayer;
+import org.mangorage.loader.api.IModuleLayer;
 
 public final class ModuleLayerImpl implements IModuleLayer {
     private final ModuleLayer layer;

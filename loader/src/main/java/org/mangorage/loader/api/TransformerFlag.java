@@ -1,4 +1,4 @@
-package org.mangorage.boot.loader.api;
+package org.mangorage.loader.api;
 
 
 public enum TransformerFlag {

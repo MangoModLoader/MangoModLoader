@@ -1,10 +1,14 @@
 module loader {
     requires java.desktop;
     requires java.naming;
+    requires com.google.gson;
 
-    exports org.mangorage.boot.loader.api;
-    exports org.mangorage.boot;
+    exports org.mangorage.loader.api;
+    exports org.mangorage.loader.api.mod;
 
-    uses org.mangorage.boot.loader.api.IClassTransformer;
-    uses org.mangorage.boot.loader.api.IModuleConfigurator;
+    opens org.mangorage.loader;
+
+    uses org.mangorage.loader.api.IClassTransformer;
+    uses org.mangorage.loader.api.IModuleConfigurator;
+    uses org.mangorage.loader.api.mod.IModContainer;
 }

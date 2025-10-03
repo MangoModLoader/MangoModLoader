@@ -1,8 +1,8 @@
-package org.mangorage.boot.loader;
+package org.mangorage.loader.internal;
 
-import org.mangorage.boot.loader.api.IClassTransformer;
-import org.mangorage.boot.loader.api.IMangoLoader;
-import org.mangorage.boot.loader.api.IModuleConfigurator;
+import org.mangorage.loader.api.IClassTransformer;
+import org.mangorage.loader.api.IMangoLoader;
+import org.mangorage.loader.api.IModuleConfigurator;
 
 import java.io.IOException;
 import java.io.InputStream;

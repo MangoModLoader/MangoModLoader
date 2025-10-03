@@ -1,7 +1,7 @@
-package org.mangorage.boot.loader.api;
+package org.mangorage.loader.api;
 
 
-import org.mangorage.boot.loader.JPMSGameClassloader;
+import org.mangorage.loader.internal.JPMSGameClassloader;
 
 public sealed interface IMangoLoader permits JPMSGameClassloader {
     byte[] getClassBytes(String name);

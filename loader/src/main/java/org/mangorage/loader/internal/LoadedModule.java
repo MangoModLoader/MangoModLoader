@@ -1,4 +1,4 @@
-package org.mangorage.boot.loader;
+package org.mangorage.loader.internal;
 
 import java.io.IOException;
 import java.lang.module.ModuleReader;

@@ -1,9 +1,9 @@
-package org.mangorage.boot.loader;
+package org.mangorage.loader.internal;
 
 
-import org.mangorage.boot.loader.api.IClassTransformer;
-import org.mangorage.boot.loader.api.TransformResult;
-import org.mangorage.boot.loader.api.TransformerFlag;
+import org.mangorage.loader.api.IClassTransformer;
+import org.mangorage.loader.api.TransformResult;
+import org.mangorage.loader.api.TransformerFlag;
 
 import java.util.List;
 import java.util.Map;

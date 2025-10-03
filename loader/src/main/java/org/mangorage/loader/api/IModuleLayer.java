@@ -1,7 +1,7 @@
-package org.mangorage.boot.loader.api;
+package org.mangorage.loader.api;
 
 
-import org.mangorage.boot.loader.ModuleLayerImpl;
+import org.mangorage.loader.internal.ModuleLayerImpl;
 
 import java.util.List;
 

@@ -1,3 +1,3 @@
-package org.mangorage.boot.loader.api;
+package org.mangorage.loader.api;
 
 public record TransformResult(byte[] classData, TransformerFlag flag) {}
