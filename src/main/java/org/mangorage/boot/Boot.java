@@ -108,17 +108,18 @@ public final class Boot {
 
     public static void callInit(String className, String[] args, Module module, ModuleLayer moduleLayer) {
         try {
-            Class<?> clazz = Class.forName(module, className);
+            Class<?> clazz = Class.forName(className, false, Thread.currentThread().getContextClassLoader());
             Method initMethod = clazz.getMethod("init", String[].class, ModuleLayer.class);
 
             // Make sure it’s static and public
             if (!java.lang.reflect.Modifier.isStatic(initMethod.getModifiers())) {
-                throw new IllegalStateException("init method is not static.");
+                throw new IllegalStateException("init method is not static!");
             }
 
             // Invoke the init method
             initMethod.invoke(null, args, moduleLayer);
         } catch (Throwable e) {
+            e.printStackTrace();
             throw new RuntimeException("Couldn't reflectively call init because something exploded.", e);
         }
     }
@@ -210,8 +211,6 @@ public final class Boot {
                 Path.of("classpath")
         );
 
-
-
         final var parent = ModuleLayer.boot();
         final var loaderJar = jars.stream()
                 .filter(info -> info.layer().contains("loader"))
@@ -230,15 +229,19 @@ public final class Boot {
                 ModuleFinder.of(
                         loaderJar.resolve(Path.of("classpath"))
                 ),
-                Set.of("loader")
+                Set.of("loader", "com.google.gson")
         );
 
+        final List<URL> urls = new ArrayList<>();
+        urls.add(loaderJar.resolve(Path.of("classpath")).toUri().toURL());
+        urls.add(gsonJar.toUri().toURL());
+
         final var classloader = new URLClassLoader(
-                new URL[]{loaderJar.resolve(Path.of("classpath")).toUri().toURL()},
+                urls.toArray(URL[]::new),
                 Thread.currentThread().getContextClassLoader()
         );
 
-        final var moduleLayerController = ModuleLayer.defineModulesWithOneLoader(moduleCfg, List.of(parent), classloader);
+        final var moduleLayerController = ModuleLayer.defineModules(moduleCfg, List.of(parent), (s) -> classloader);
         final var moduleLayer = moduleLayerController.layer();
         final var module = moduleLayer.findModule("loader").get();
 

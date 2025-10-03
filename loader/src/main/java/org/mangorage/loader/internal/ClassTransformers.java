@@ -33,7 +33,6 @@ public final class ClassTransformers {
     }
 
     byte[] transform(String name, byte[] classData) {;
-
         AtomicReference<TransformResult> result = new AtomicReference<>(TransformerFlag.NO_REWRITE.of(classData));
         AtomicReference<IClassTransformer> _transformer = new AtomicReference<>();
 

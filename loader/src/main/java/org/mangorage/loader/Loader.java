@@ -1,9 +1,7 @@
 package org.mangorage.loader;
 
-
 import com.google.gson.Gson;
 import org.mangorage.loader.internal.JPMSGameClassloader;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -120,16 +118,16 @@ public final class Loader {
 
         final var librariesPath = Path.of("classpath\\libraries");
         final List<Path> libraries = Files.exists(librariesPath) ? findJarsInFolder(librariesPath) : List.of();
+        final List<Configuration> parents = new ArrayList<>();
+        parents.add(parent.configuration());
+
+
 
         final var moduleCfg = Configuration.resolveAndBind(
-                ModuleFinder.of(
-                        libraries.toArray(Path[]::new)
-                ),
-                List.of(
-                        parent.configuration()
-                ),
+                ModuleFinder.of(libraries.toArray(Path[]::new)),
+                parents,
                 ModuleFinder.of(mods.toArray(Path[]::new)),
-                Set.of("loader")
+                Set.of()
         );
 
         final var classloader = new JPMSGameClassloader(
@@ -137,10 +135,12 @@ public final class Loader {
                 Thread.currentThread().getContextClassLoader()
         );
 
-        final var moduleLayerController = ModuleLayer.defineModulesWithOneLoader(moduleCfg, List.of(parent), classloader);
+        final var moduleLayerController = ModuleLayer.defineModules(moduleCfg, List.of(parent), s -> classloader);
         final var moduleLayer = moduleLayerController.layer();
 
         Thread.currentThread().setContextClassLoader(classloader);
+
+        classloader.load(moduleLayer, moduleLayerController);
 
         ModLoader.loadMods(moduleLayer);
     }

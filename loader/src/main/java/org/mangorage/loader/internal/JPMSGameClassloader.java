@@ -55,7 +55,7 @@ public final class JPMSGameClassloader extends SecureClassLoader implements IMan
 
     public void load(final ModuleLayer moduleLayer, final ModuleLayer.Controller controller) {
         loadModuleConfiguration(moduleLayer, controller);
-        loadTransformers();
+        loadTransformers(moduleLayer);
     }
 
     void loadModuleConfiguration(final ModuleLayer moduleLayer, final ModuleLayer.Controller controller) {
@@ -78,7 +78,7 @@ public final class JPMSGameClassloader extends SecureClassLoader implements IMan
                 });
     }
 
-    void loadTransformers() {
+    void loadTransformers(ModuleLayer moduleLayer) {
         ServiceLoader.load(IClassTransformer.class)
                 .stream()
                 .map(ServiceLoader.Provider::get)
