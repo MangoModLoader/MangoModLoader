@@ -667,6 +667,98 @@ dependencies {
         }
     }
 
+    // Mixin
+
+    jarJar("net.fabricmc:sponge-mixin:0.15.4+mixin.0.8.7") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("io.github.llamalad7:mixinextras-common:0.4.1") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.ow2.asm:asm:9.8") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.ow2.asm:asm-util:9.8") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.ow2.asm:asm-analysis:9.8") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.ow2.asm:asm-tree:9.8") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.ow2.asm:asm-commons:9.8") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    // Forge
+
+    jarJar('net.minecraftforge:modlauncher:10.2.4') {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar('net.minecraftforge:bootstrap-api:2.0.0') {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar('net.minecraftforge:unsafe:0.9.2') {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar('net.minecraftforge:securemodules:2.2.21') {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
 
 
     // Normal

@@ -2,6 +2,8 @@ module examplemod {
     requires minersparadise;
     requires org.json;
     requires loader;
+    requires static org.spongepowered.mixin;
+    requires static joined;
 
     opens org.mangorage.example to loader;
 

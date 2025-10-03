@@ -155,6 +155,7 @@ public final class Loader {
 
         classloader.load(moduleLayer, moduleLayerController);
 
+        ModLoader.loadMods(moduleLayer);
 
         final var clazz = Class.forName("net.minecraft.client.main.Main", false, Thread.currentThread().getContextClassLoader());
 
@@ -182,7 +183,5 @@ public final class Loader {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        // ModLoader.loadMods(moduleLayer);
     }
 }

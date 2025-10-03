@@ -6,7 +6,6 @@ import org.mangorage.loader.api.TransformResult;
 public class MyClassTransformer implements IClassTransformer {
     @Override
     public TransformResult transform(String className, byte[] classData) {
-        System.out.println("Class -> " + className);
         return TransformResult.none(classData);
     }
 

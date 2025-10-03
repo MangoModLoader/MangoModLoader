@@ -1,0 +1,65 @@
+plugins {
+    id 'java'
+    id 'net.minecraftforge.gradle' version '7.0.0-beta.6'
+    id 'org.gradlex.extra-java-module-info' version '1.12'
+}
+
+group = 'org.mangorage'
+version = '1.0-SNAPSHOT'
+
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+    maven {
+        url = "https://maven.mangorage.org/releases"
+    }
+    maven {
+        url = 'https://maven.minecraftforge.net/'
+    }
+    maven {
+        url = "https://maven.fabricmc.net/"
+    }
+    maven {
+        url 'https://m2.dv8tion.net/releases'
+    }
+    maven {
+        url 'https://jitpack.io'
+    }
+}
+
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    compileOnly project(":loader")
+
+    // SpongeMixin...
+    compileOnly('net.fabricmc:sponge-mixin:0.15.4+mixin.0.8.7')
+    compileOnly('io.github.llamalad7:mixinextras-common:0.4.1')
+
+
+    compileOnly 'cpw.mods:modlauncher:+'
+    compileOnly 'org.apache.logging.log4j:log4j-api:2.24.1'
+
+    compileOnly('org.ow2.asm:asm:9.8')
+    compileOnly('org.ow2.asm:asm-util:9.8')
+    compileOnly('org.ow2.asm:asm-analysis:9.8')
+    compileOnly('org.ow2.asm:asm-tree:9.8')
+    compileOnly('org.ow2.asm:asm-commons:9.8')
+}
+
+test {
+    useJUnitPlatform()
+}
+
+extraJavaModuleInfo {
+    setDeriveAutomaticModuleNamesFromFileNames(true)
+    module("net.fabricmc:sponge-mixin", "org.spongepowered.mixin") {
+        preserveExisting()
+        exports("org.spongepowered.asm.mixin.transformer", "mixinsupport")
+        opens("org.spongepowered.asm.mixin.transformer", "mixinsupport")
+
+        exports("org.spongepowered.asm.transformers", "mixinsupport")
+    }
+}
