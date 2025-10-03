@@ -7,11 +7,12 @@ plugins {
 group = 'org.mangorage'
 version = '1.0-SNAPSHOT'
 
-jarJar.register()
+jarJar.register() {
+    it.archiveClassifier = ""
+}
 
 extraJavaModuleInfo {
     setDeriveAutomaticModuleNamesFromFileNames(true)
-
 }
 
 
@@ -45,7 +46,7 @@ dependencies {
     jarJar('org.json:json:20240303') {
         jarJar.configure(it) {
             module {
-                group = 'library'
+                group = 'librariesa'
             }
             version = '20240303'
         }

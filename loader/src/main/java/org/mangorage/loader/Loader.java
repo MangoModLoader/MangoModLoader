@@ -3,6 +3,7 @@ package org.mangorage.loader;
 import com.google.gson.Gson;
 import org.mangorage.loader.internal.JPMSGameClassloader;
 import org.mangorage.loader.internal.Util;
+import org.mangorage.loader.internal.minecraft.MinecraftFetcher;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -21,6 +22,8 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
+
+import static org.mangorage.loader.internal.minecraft.MinecraftFetcher.fetch;
 
 public final class Loader {
     private static final Gson GSON = new Gson();
@@ -89,6 +92,9 @@ public final class Loader {
     public static void init(String[] args, ModuleLayer parent) throws IOException, InterruptedException, ClassNotFoundException {
         System.out.println("Booted into JPMS successfully, booting into game now!");
 
+        final var MC = fetch("https://piston-meta.mojang.com/v1/packages/d7a33415a8e68a8fdff87ab2020e64de021df302/1.21.9.json");
+        MinecraftFetcher.downloadLibraries(MC);
+
         List<Path> mods = new ArrayList<>();
         mods.addAll(findJarsInFolder(Path.of("classpath\\game")));
         mods.addAll(findJarsInFolder(Path.of("mods")));
@@ -128,6 +134,7 @@ public final class Loader {
         Set<String> moduleNames = new HashSet<>();
         moduleNames.addAll(Util.getModuleNames(Path.of("classpath").resolve("libraries")));
         moduleNames.add("joined");
+        // sun.security.ec
 
         final var moduleCfg = Configuration.resolveAndBind(
                 ModuleFinder.of(libraries.toArray(Path[]::new)),

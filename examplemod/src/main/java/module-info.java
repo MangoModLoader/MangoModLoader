@@ -1,5 +1,4 @@
 module examplemod {
-    requires minersparadise;
     requires org.json;
     requires loader;
     requires static org.spongepowered.mixin;
