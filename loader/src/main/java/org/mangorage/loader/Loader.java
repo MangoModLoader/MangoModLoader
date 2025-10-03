@@ -188,11 +188,6 @@ public final class Loader {
                 "--versionType", "release",
                 "--width", "925",
                 "--height", "530",
-                "--launchTarget", "forgeclient",
-                "--fml.forgeVersion", "47.4.0",
-                "--fml.mcVersion", "1.20.1",
-                "--fml.forgeGroup", "net.minecraftforge",
-                "--fml.mcpVersion", "20230612.114412",
                 "--accessToken", "WHAT"
         };
 
