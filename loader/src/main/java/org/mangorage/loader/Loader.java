@@ -2,6 +2,8 @@ package org.mangorage.loader;
 
 import com.google.gson.Gson;
 import org.mangorage.loader.internal.JPMSGameClassloader;
+import org.mangorage.loader.internal.Util;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.jar.JarEntry;
@@ -83,7 +86,7 @@ public final class Loader {
     }
 
 
-    public static void init(String[] args, ModuleLayer parent) throws IOException, InterruptedException {
+    public static void init(String[] args, ModuleLayer parent) throws IOException, InterruptedException, ClassNotFoundException {
         System.out.println("Booted into JPMS successfully, booting into game now!");
 
         List<Path> mods = new ArrayList<>();
@@ -122,12 +125,15 @@ public final class Loader {
         parents.add(parent.configuration());
 
 
+        Set<String> moduleNames = new HashSet<>();
+        moduleNames.addAll(Util.getModuleNames(Path.of("classpath").resolve("libraries")));
+        moduleNames.add("joined");
 
         final var moduleCfg = Configuration.resolveAndBind(
                 ModuleFinder.of(libraries.toArray(Path[]::new)),
                 parents,
                 ModuleFinder.of(mods.toArray(Path[]::new)),
-                Set.of()
+                moduleNames
         );
 
         final var classloader = new JPMSGameClassloader(
@@ -140,8 +146,43 @@ public final class Loader {
 
         Thread.currentThread().setContextClassLoader(classloader);
 
+
+        final var joinedModule = moduleLayer.findModule("joined").get();
+        final var lwjglModule = moduleLayer.findModule("org.lwjgl").get();
+
+        moduleLayerController.addReads(joinedModule, lwjglModule);
+        moduleLayerController.addOpens(lwjglModule, "org.lwjgl.system", joinedModule);
+
         classloader.load(moduleLayer, moduleLayerController);
 
-        ModLoader.loadMods(moduleLayer);
+
+        final var clazz = Class.forName("net.minecraft.client.main.Main", false, Thread.currentThread().getContextClassLoader());
+
+        String[] MCargs = {
+                "--username", "X-Shadow228",
+                "--version", "Cursed Walking - A Modern Zombie Apocalypse Cursed Walking-Version 3.1.0 Hotfix",
+                "--assetIndex", "5",
+                "--uuid", "913bdf0f-2b64-11ed-9fd7-040300000000",
+                "--clientId", "null",
+                "--xuid", "null",
+                "--userType", "mojang",
+                "--versionType", "release",
+                "--width", "925",
+                "--height", "530",
+                "--launchTarget", "forgeclient",
+                "--fml.forgeVersion", "47.4.0",
+                "--fml.mcVersion", "1.20.1",
+                "--fml.forgeGroup", "net.minecraftforge",
+                "--fml.mcpVersion", "20230612.114412",
+                "--accessToken", "WHAT"
+        };
+
+        try {
+            clazz.getMethod("main", String[].class).invoke(null, (Object) MCargs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // ModLoader.loadMods(moduleLayer);
     }
 }

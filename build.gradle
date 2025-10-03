@@ -3,6 +3,7 @@ import  net.minecraftforge.jarjar.gradle.JarJar;
 plugins {
     id 'java'
     id "net.minecraftforge.jarjar" version "0.1.0"
+    id 'net.minecraftforge.gradle' version '7.0.0-beta.6'
 }
 
 group = 'org.mangorage'
@@ -10,13 +11,665 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+
+    maven minecraft.maven
+    maven fg.forgeMaven
+    maven fg.minecraftLibsMaven
+
+    maven {
+        url = uri("https://maven.terraformersmc.com/")
+    }
 }
 
 jarJar.register()
 
+minecraft {
+    mappings channel: 'official', version: '1.21.9'
+}
+
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    // MC Deps
+
+    jarJar(minecraft.dep("net.minecraft:joined:1.21.9")) {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.fasterxml.jackson.core:jackson-annotations:2.13.4") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.fasterxml.jackson.core:jackson-core:2.13.4") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.fasterxml.jackson.core:jackson-databind:2.13.4.2") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.github.oshi:oshi-core:6.6.5") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("net.java.dev.jna:jna:5.15.0") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("net.java.dev.jna:jna-platform:5.15.0") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.slf4j:slf4j-api:2.0.16") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.github.stephenc.jcip:jcip-annotations:1.0-1") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.google.errorprone:error_prone_annotations:2.28.0") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.google.guava:failureaccess:1.0.2") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.google.guava:guava:33.3.1-jre") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.google.code.findbugs:jsr305:3.0.2") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.checkerframework:checker-qual:3.43.0") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.google.j2objc:j2objc-annotations:3.0.0") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.ibm.icu:icu4j:76.1") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.microsoft.azure:msal4j:1.17.2") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.nimbusds:oauth2-oidc-sdk:11.18") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.nimbusds:content-type:2.3") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("net.minidev:json-smart:2.5.1") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("net.minidev:accessors-smart:2.5.1") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.ow2.asm:asm:9.6") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.nimbusds:lang-tag:1.7") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+//    jarJar("com.nimbusds:nimbus-jose-jwt:9.40") {
+//        jarJar.configure(it) {
+//            module {
+//                group = 'libraries'
+//            }
+//        }
+//    }
+
+    jarJar("com.mojang:authlib:7.0.61") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.mojang:blocklist:1.0.10") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.mojang:brigadier:1.3.10") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.mojang:datafixerupper:8.0.16") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("it.unimi.dsi:fastutil:8.5.15") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.mojang:jtracy:1.0.36") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.mojang:logging:1.5.10") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.mojang:patchy:2.2.10") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("com.mojang:text2speech:1.18.11") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("commons-codec:commons-codec:1.17.1") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("commons-io:commons-io:2.17.0") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("commons-logging:commons-logging:1.3.4") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("io.netty:netty-buffer:4.1.118.Final") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("io.netty:netty-codec-http:4.1.118.Final") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("io.netty:netty-codec:4.1.118.Final") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("io.netty:netty-common:4.1.118.Final") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("io.netty:netty-handler:4.1.118.Final") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("io.netty:netty-resolver:4.1.118.Final") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("io.netty:netty-transport-classes-epoll:4.1.118.Final") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("io.netty:netty-transport-native-unix-common:4.1.118.Final") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("io.netty:netty-transport:4.1.118.Final") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("net.sf.jopt-simple:jopt-simple:5.0.4") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.apache.commons:commons-compress:1.27.1") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.apache.commons:commons-lang3:3.17.0") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.apache.httpcomponents:httpclient:4.5.14") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.apache.httpcomponents:httpcore:4.4.16") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.apache.logging.log4j:log4j-api:2.24.1") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.apache.logging.log4j:log4j-core:2.24.1") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.apache.logging.log4j:log4j-slf4j2-impl:2.24.1") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.jcraft:jorbis:0.0.17") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.joml:joml:1.10.8") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.20") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.jetbrains.kotlin:kotlin-stdlib:1.8.20") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.jetbrains.kotlin:kotlin-stdlib-common:1.8.20") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.jetbrains:annotations:24.0.1") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.20") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.lwjgl:lwjgl-freetype:3.3.3") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.lwjgl:lwjgl-glfw:3.3.3") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.lwjgl:lwjgl-jemalloc:3.3.3") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.lwjgl:lwjgl-openal:3.3.3") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.lwjgl:lwjgl-opengl:3.3.3") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.lwjgl:lwjgl-stb:3.3.3") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.lwjgl:lwjgl-tinyfd:3.3.3") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.lwjgl:lwjgl:3.3.3") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.lz4:lz4-java:1.8.0") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("ca.weblite:java-objc-bridge:1.1") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("net.minecraftforge:mergetool-api:1.0") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    // Natives
+
+    jarJar("org.lwjgl:lwjgl:3.3.3:natives-windows") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.lwjgl:lwjgl-freetype:3.3.3:natives-windows") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.lwjgl:lwjgl-glfw:3.3.3:natives-windows") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.lwjgl:lwjgl-jemalloc:3.3.3:natives-windows") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.lwjgl:lwjgl-openal:3.3.3:natives-windows") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.lwjgl:lwjgl-opengl:3.3.3:natives-windows") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.lwjgl:lwjgl-stb:3.3.3:natives-windows") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+    jarJar("org.lwjgl:lwjgl-tinyfd:3.3.3:natives-windows") {
+        jarJar.configure(it) {
+            module {
+                group = 'libraries'
+            }
+        }
+    }
+
+
+
+    // Normal
 
     jarJar(project(":game")) {
         jarJar.configure(it) {

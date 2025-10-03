@@ -136,11 +136,10 @@ public final class JPMSGameClassloader extends SecureClassLoader implements IMan
         if (module != null) {
             try {
                 URL url = findResource(module.name(), name);
-                if (url != null
-                        && (name.endsWith(".class")
-                        || url.toString().endsWith("/")
-                        || isOpen(module.getModuleReference(), pn))) {
+                if (url != null && (name.endsWith(".class") || url.toString().endsWith("/") || isOpen(module.getModuleReference(), pn))) {
                     return url;
+                } else if (url != null) {
+                    System.out.println("NAME is private!");
                 }
             } catch (IOException ioe) {
                 // ignore
@@ -173,10 +172,7 @@ public final class JPMSGameClassloader extends SecureClassLoader implements IMan
         LoadedModule module = localPackageToModule.get(pn);
         if (module != null) {
             URL url = findResource(module.name(), name);
-            if (url != null
-                    && (name.endsWith(".class")
-                    || url.toString().endsWith("/")
-                    || isOpen(module.getModuleReference(), pn))) {
+            if (url != null && (name.endsWith(".class") || url.toString().endsWith("/") || isOpen(module.getModuleReference(), pn))) {
                 return List.of(url);
             } else {
                 return Collections.emptyList();
