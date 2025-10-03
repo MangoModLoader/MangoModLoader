@@ -3,7 +3,6 @@ import  net.minecraftforge.jarjar.gradle.JarJar;
 plugins {
     id 'java'
     id "net.minecraftforge.jarjar" version "0.1.0"
-    id 'net.minecraftforge.gradle' version '7.0.0-beta.6'
 }
 
 group = 'org.mangorage'
@@ -11,10 +10,12 @@ version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
-
-    maven minecraft.maven
-    maven fg.forgeMaven
-    maven fg.minecraftLibsMaven
+    maven {
+        url = "https://maven.minecraftforge.net/"
+    }
+    maven {
+        url = "https://libraries.minecraft.net/"
+    }
 
     maven {
         url = uri("https://maven.terraformersmc.com/")
@@ -23,21 +24,9 @@ repositories {
 
 jarJar.register()
 
-minecraft {
-    mappings channel: 'official', version: '1.21.9'
-}
-
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
-
-    jarJar(compileOnly minecraft.dep('net.minecraft:joined:1.21.9')) {
-        jarJar.configure(it) {
-            module {
-                group = 'game'
-            }
-        }
-    }
 
     jarJar('com.mojang:jtracy:1.0.29') {
         jarJar.configure(it) {
@@ -170,6 +159,14 @@ dependencies {
         }
     }
 
+    jarJar(compileOnly('net.minecraftforge:minecraft-mavenizer:0.3.19')) {
+        jarJar.configure(it) {
+            module {
+                group = 'mavenizer'
+            }
+        }
+    }
+
     java {
         modularity.inferModulePath = true
     }
@@ -181,6 +178,7 @@ sourceSets {
         output.resourcesDir = output.classesDirs.singleFile
     }
 }
+
 
 test {
     useJUnitPlatform()

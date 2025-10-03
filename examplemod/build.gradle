@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id "net.minecraftforge.jarjar" version "0.1.0"
     id 'org.gradlex.extra-java-module-info' version '1.12'
+    id 'net.minecraftforge.gradle' version '+'
 }
 
 group = 'org.mangorage'
@@ -21,7 +22,20 @@ repositories {
     maven {
         url = "https://maven.minecraftforge.net/"
     }
+
+    maven minecraft.maven
+    maven fg.forgeMaven
+    maven fg.minecraftLibsMaven
+
+    maven {
+        url = uri("https://maven.terraformersmc.com/")
+    }
 }
+
+minecraft {
+    mappings channel: 'official', version: '1.21.9'
+}
+
 
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
@@ -30,7 +44,7 @@ dependencies {
     compileOnly project(":game")
     compileOnly project(":loader")
 
-    compileOnly rootProject.files('libs/joined-1.21.9.jar')
+    compileOnly minecraft.dep('net.minecraft:joined:1.21.9')
 
     compileOnly 'cpw.mods:modlauncher:+'
     compileOnly 'org.apache.logging.log4j:log4j-api:2.24.1'

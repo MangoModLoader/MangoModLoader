@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.mangorage.loader.internal.JPMSGameClassloader;
 import org.mangorage.loader.internal.Util;
 import org.mangorage.loader.internal.minecraft.MinecraftFetcher;
+import org.mangorage.loader.internal.minecraft.MinecraftGenerator;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -90,12 +91,19 @@ public final class Loader {
 
 
     public static void init(String[] args, ModuleLayer parent) throws IOException, InterruptedException, ClassNotFoundException {
+        System.out.println("Generating Minecraft sources");
+
+        MinecraftGenerator.generate("1.21.9");
+
         System.out.println("Booted into JPMS successfully, booting into game now!");
 
-        final var MC = fetch("https://piston-meta.mojang.com/v1/packages/d7a33415a8e68a8fdff87ab2020e64de021df302/1.21.9.json");
-        MinecraftFetcher.downloadLibraries(MC);
+        if (!Files.exists(Path.of("libraries"))) {
+            final var MC = fetch("https://piston-meta.mojang.com/v1/packages/d7a33415a8e68a8fdff87ab2020e64de021df302/1.21.9.json");
+            MinecraftFetcher.downloadLibraries(MC);
+        }
 
         List<Path> mods = new ArrayList<>();
+        mods.add(Path.of("mavenizer/output/net/minecraft/joined/1.21.9/joined-1.21.9.jar"));
         mods.addAll(findJarsInFolder(Path.of("classpath\\game")));
         mods.addAll(findJarsInFolder(Path.of("mods")));
 
@@ -126,13 +134,16 @@ public final class Loader {
         });
 
         final var librariesPath = Path.of("classpath\\libraries");
-        final List<Path> libraries = Files.exists(librariesPath) ? findJarsInFolder(librariesPath) : List.of();
+        final List<Path> libraries = Files.exists(librariesPath) ? findJarsInFolder(librariesPath) : new ArrayList<>();
+        libraries.addAll(findJarsInFolder(Path.of("libraries")));
+
         final List<Configuration> parents = new ArrayList<>();
         parents.add(parent.configuration());
 
 
         Set<String> moduleNames = new HashSet<>();
         moduleNames.addAll(Util.getModuleNames(Path.of("classpath").resolve("libraries")));
+        moduleNames.addAll(Util.getModuleNames(Path.of("libraries")));
         moduleNames.add("joined");
         // sun.security.ec
 
@@ -167,7 +178,7 @@ public final class Loader {
         final var clazz = Class.forName("net.minecraft.client.main.Main", false, Thread.currentThread().getContextClassLoader());
 
         String[] MCargs = {
-                "--username", "X-Shadow228",
+                "--username", "MangoRage",
                 "--version", "Cursed Walking - A Modern Zombie Apocalypse Cursed Walking-Version 3.1.0 Hotfix",
                 "--assetIndex", "5",
                 "--uuid", "913bdf0f-2b64-11ed-9fd7-040300000000",
