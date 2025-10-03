@@ -1,7 +1,9 @@
 module examplemod {
     requires minersparadise;
     requires org.json;
+    requires loader;
 
-    provides org.mangorage.paradise.IMod with org.mangorage.example.ExampleMod;
-    uses org.mangorage.paradise.IMod;
+    opens org.mangorage.example to loader;
+
+    provides org.mangorage.loader.api.mod.IModContainer with org.mangorage.example.ExampleMod;
 }

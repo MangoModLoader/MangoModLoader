@@ -36,15 +36,6 @@ dependencies {
         }
     }
 
-    jarJar("com.google.code.gson:gson:2.11.0") {
-        jarJar.configure(it) {
-            module {
-                group = 'loader'
-            }
-            version = '2.11.0'
-        }
-    }
-
     java {
         modularity.inferModulePath = true
     }

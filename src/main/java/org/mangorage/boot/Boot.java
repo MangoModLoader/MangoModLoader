@@ -1,20 +1,22 @@
 package org.mangorage.boot;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.module.Configuration;
 import java.lang.module.ModuleFinder;
 import java.lang.reflect.Method;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,31 +45,46 @@ import java.util.zip.ZipEntry;
  *  -> go thru and extract libraries into classpath/libraries
  */
 public final class Boot {
-    // Copy jars into folders
+
+    // Extracts multiple jars into folders by delegating to copy()
     public static void extractJars(Path sourceJar, List<MetadataInfo> jars, Path outputRoot) throws IOException {
-        try (JarFile jarFile = new JarFile(sourceJar.toFile())) {
-            for (MetadataInfo info : jars) {
-                String internalPath = info.jar(); // e.g., META-INF/jarjar/game-1.0-SNAPSHOT.jar
-                ZipEntry entry = jarFile.getEntry(internalPath);
-                if (entry == null) {
-                    System.err.println("Jar not found inside source: " + internalPath);
-                    continue;
-                }
+        for (MetadataInfo info : jars) {
+            // Output folder for this layer
+            Path layerFolder = outputRoot.resolve(info.layer());
+            Files.createDirectories(layerFolder);
 
-                // Create output folder: outputRoot/layer/
-                Path layerFolder = outputRoot.resolve(info.layer());
-                Files.createDirectories(layerFolder);
+            // Output file path
+            Path outJar = layerFolder.resolve(Paths.get(info.jar()).getFileName());
 
-                // Output jar path
-                Path outJar = layerFolder.resolve(Paths.get(internalPath).getFileName());
-
-                try (InputStream in = jarFile.getInputStream(entry);
-                     OutputStream out = Files.newOutputStream(outJar, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING)) {
-                    in.transferTo(out);
-                }
-
+            try {
+                copy(sourceJar, info.jar(), outJar);
                 System.out.println("Extracted Jar -> " + outJar);
+            } catch (IOException e) {
+                System.err.println("Failed to extract " + info.jar() + ": " + e.getMessage());
             }
+        }
+    }
+
+    /**
+     * Copies a file stored inside a fat/shadow jar as a resource to disk.
+     *
+     * @param containerJar The container jar file on disk
+     * @param internalPath Path inside the jar (forward slashes, e.g., "internal/gson-2.11.0.jar")
+     * @param output Path to write the extracted file
+     * @throws IOException
+     */
+    public static void copy(Path containerJar, String internalPath, Path output) throws IOException {
+        // Open the container jar as a FileSystem
+        try (FileSystem fs = FileSystems.newFileSystem(containerJar)) {
+            Path resource = fs.getPath(internalPath.replace("\\", "/"));
+            if (!Files.exists(resource)) {
+                throw new FileNotFoundException("Internal jar not found: " + internalPath);
+            }
+
+            // Make parent dirs
+            if (output.getParent() != null) Files.createDirectories(output.getParent());
+
+            Files.copy(resource, output, StandardCopyOption.REPLACE_EXISTING);
         }
     }
 
@@ -96,13 +113,12 @@ public final class Boot {
 
             // Make sure it’s static and public
             if (!java.lang.reflect.Modifier.isStatic(initMethod.getModifiers())) {
-                throw new IllegalStateException("init method is not static, are you high?");
+                throw new IllegalStateException("init method is not static.");
             }
 
             // Invoke the init method
             initMethod.invoke(null, args, moduleLayer);
         } catch (Throwable e) {
-            e.printStackTrace();
             throw new RuntimeException("Couldn't reflectively call init because something exploded.", e);
         }
     }
@@ -180,7 +196,13 @@ public final class Boot {
         String json = new String(metadata);
 
         final var jars = parseGroupsAndPaths(json);
+        final var gsonJar = Path.of("classpath").resolve("loader").resolve("gson.jar").toAbsolutePath();
 
+        copy(
+                Path.of(Boot.class.getProtectionDomain().getCodeSource().getLocation().toURI()),
+                "internal/gson-2.11.0.jar",
+                gsonJar
+        );
 
         extractJars(
                 Path.of(Boot.class.getProtectionDomain().getCodeSource().getLocation().toURI()),
@@ -188,22 +210,19 @@ public final class Boot {
                 Path.of("classpath")
         );
 
+
+
         final var parent = ModuleLayer.boot();
         final var loaderJar = jars.stream()
                 .filter(info -> info.layer().contains("loader"))
                 .filter(info -> info.jar().contains("loader"))
                 .findAny()
                 .orElseThrow(() -> new IllegalArgumentException("Unable to find loader"));
-        final var gsonJar = jars.stream()
-                .filter(info -> info.layer().contains("loader"))
-                .filter(info -> info.jar().contains("gson"))
-                .findAny()
-                .orElseThrow(() -> new IllegalArgumentException("Unable to find loader"));
 
 
         final var moduleCfg = Configuration.resolveAndBind(
                 ModuleFinder.of(
-                        gsonJar.resolve(Path.of("classpath"))
+                        gsonJar
                 ),
                 List.of(
                         parent.configuration()

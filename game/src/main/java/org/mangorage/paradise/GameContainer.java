@@ -6,9 +6,13 @@ import org.mangorage.paradise.game.GameImpl;
 
 public class GameContainer implements IModContainer<Game> {
 
+    public void init() {
+        if (GameImpl.getInstance() == null) GameImpl.main(new String[]{});
+    }
+
+
     @Override
     public Game getInstance() {
-        if (GameImpl.getInstance() == null) GameImpl.main(new String[]{});
         return GameImpl.getInstance();
     }
 

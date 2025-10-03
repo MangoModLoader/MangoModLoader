@@ -17,6 +17,8 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     compileOnly project(":game")
+    compileOnly project(":loader")
+
     compileOnly 'org.json:json:20240303'
 
     // 'org.json:json:20240303'

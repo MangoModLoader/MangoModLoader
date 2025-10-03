@@ -5,6 +5,7 @@ module minersparadise {
 
 
     exports org.mangorage.paradise;
+    opens org.mangorage.paradise to loader;
 
     exports org.mangorage.paradise.core.asset.sprite;
     exports org.mangorage.paradise.core.asset;

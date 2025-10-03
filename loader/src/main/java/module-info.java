@@ -2,6 +2,7 @@ module loader {
     requires java.desktop;
     requires java.naming;
     requires com.google.gson;
+    requires java.management;
 
     exports org.mangorage.loader.api;
     exports org.mangorage.loader.api.mod;

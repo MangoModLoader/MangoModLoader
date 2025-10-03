@@ -24,7 +24,6 @@ import java.util.zip.ZipEntry;
 public final class Loader {
     private static final Gson GSON = new Gson();
 
-
     public static List<Path> findJarsInFolder(Path folder) throws IOException {
         List<Path> jars = new ArrayList<>();
 
@@ -86,7 +85,7 @@ public final class Loader {
     }
 
 
-    public static void init(String[] args, ModuleLayer parent) throws IOException {
+    public static void init(String[] args, ModuleLayer parent) throws IOException, InterruptedException {
         System.out.println("Booted into JPMS successfully, booting into game now!");
 
         List<Path> mods = new ArrayList<>();
@@ -100,11 +99,9 @@ public final class Loader {
                         "META-INF/jarjar/metadata.json"
                 ));
 
-                System.out.println(modMetadata);
                 final var jarConfig = GSON.fromJson(modMetadata, JarConfig.class);
                 jarConfig.getJars()
                         .forEach(jar -> {
-                            System.out.println(jar.getPath());
                             try {
                                 extractFileFromJar(
                                         mod.toString(),
