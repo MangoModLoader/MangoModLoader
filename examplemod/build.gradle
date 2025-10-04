@@ -41,7 +41,6 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
-    compileOnly project(":game")
     compileOnly project(":loader")
 
     compileOnly minecraft.dep('net.minecraft:joined:1.21.9')

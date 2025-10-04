@@ -3,6 +3,7 @@ package org.mangorage.loader;
 import com.google.gson.Gson;
 import org.mangorage.loader.internal.JPMSGameClassloader;
 import org.mangorage.loader.internal.Util;
+import org.mangorage.loader.internal.WorkingDialog;
 import org.mangorage.loader.internal.minecraft.MinecraftFetcher;
 import org.mangorage.loader.internal.minecraft.MinecraftGenerator;
 
@@ -91,11 +92,17 @@ public final class Loader {
 
 
     public static void init(String[] args, ModuleLayer parent) throws IOException, InterruptedException, ClassNotFoundException {
-        System.out.println("Generating Minecraft sources");
+        final var dialog = new WorkingDialog();
+
+        dialog.init("Starting Game soon!");
+
+        Thread.sleep(4000);
+
+        dialog.setText("Generating Minecraft sources");
 
         MinecraftGenerator.generate("1.21.9");
 
-        System.out.println("Booted into JPMS successfully, booting into game now!");
+        dialog.setText("Booted into JPMS successfully, booting into game now!");
 
         if (!Files.exists(Path.of("libraries"))) {
             final var MC = fetch("https://piston-meta.mojang.com/v1/packages/d7a33415a8e68a8fdff87ab2020e64de021df302/1.21.9.json");
@@ -179,7 +186,7 @@ public final class Loader {
 
         String[] MCargs = {
                 "--username", "MangoRage",
-                "--version", "Cursed Walking - A Modern Zombie Apocalypse Cursed Walking-Version 3.1.0 Hotfix",
+                "--version", "MangoModLoader Testing Sessions",
                 "--assetIndex", "5",
                 "--uuid", "913bdf0f-2b64-11ed-9fd7-040300000000",
                 "--clientId", "null",
@@ -190,6 +197,9 @@ public final class Loader {
                 "--height", "530",
                 "--accessToken", "WHAT"
         };
+
+        dialog.setText("Loading Game...");
+        dialog.close();
 
         try {
             clazz.getMethod("main", String[].class).invoke(null, (Object) MCargs);
