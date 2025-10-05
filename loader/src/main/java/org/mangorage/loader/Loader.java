@@ -1,6 +1,7 @@
 package org.mangorage.loader;
 
 import com.google.gson.Gson;
+import org.mangorage.loader.internal.Constants;
 import org.mangorage.loader.internal.JPMSGameClassloader;
 import org.mangorage.loader.internal.Util;
 import org.mangorage.loader.internal.WorkingDialog;
@@ -105,9 +106,9 @@ public final class Loader {
                 Files.createDirectories(Path.of("mods"));
             }
 
-            dialog.setText("Generating Minecraft sources");
+            dialog.setText("Generating Minecraft sources for version " + Constants.MINECRAFT_VERSION);
 
-            MinecraftGenerator.generate("1.21.9");
+            MinecraftGenerator.generate(Constants.MINECRAFT_VERSION);
 
             String userHome = System.getProperty("user.home") + "\\AppData\\Roaming\\";
             final var minecraftFolder = Path.of(userHome).resolve(".minecraft");
@@ -118,17 +119,15 @@ public final class Loader {
 
             dialog.setText("Booted into JPMS successfully, booting into game now!");
 
-            final var MC = fetch("https://piston-meta.mojang.com/v1/packages/d7a33415a8e68a8fdff87ab2020e64de021df302/1.21.9.json");
+            final var MC = fetch(Constants.MINECRAFT_VERSIONS_JSON_URL);
             final var mcLibraries = MavenCoord.fromMinecraftVersion(MC)
                     .stream()
                     .map(path -> minecraftFolder.resolve("libraries").resolve(path))
                     .filter(Files::exists)
                     .toList();
 
-
-
             List<Path> mods = new ArrayList<>();
-            mods.add(Path.of("mavenizer/output/net/minecraft/joined/1.21.9/joined-1.21.9.jar"));
+            mods.add(Path.of("mavenizer/output/net/minecraft/joined/1.21.9/joined-1.21.9.jar"));     // TODO: Get rid of Mavenizer eventually
             mods.addAll(findJarsInFolder(Path.of("classpath\\game")));
             mods.addAll(findJarsInFolder(Path.of("mods")));
 
@@ -173,7 +172,7 @@ public final class Loader {
 
             Set<String> moduleNames = new HashSet<>();
             moduleNames.addAll(Util.getModuleNames(Path.of("classpath").resolve("libraries")));
-            moduleNames.addAll(List.of("joined"));
+            moduleNames.addAll(List.of("joined"));     // TODO: Get rid of Mavenizer eventually
 
             mcLibraries.stream()
                     .map(path -> minecraftFolder.resolve("libraries").resolve(path))
