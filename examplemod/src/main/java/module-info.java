@@ -1,6 +1,6 @@
 module examplemod {
     requires org.json;
-    requires loader;
+    requires org.mangorage.mangomodloader;
     requires static org.spongepowered.mixin;
     requires static minecraft;
 

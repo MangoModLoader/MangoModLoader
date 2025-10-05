@@ -1,4 +1,4 @@
-module loader {
+module org.mangorage.mangomodloader {
     requires java.desktop;
     requires java.net.http;
     requires java.management;

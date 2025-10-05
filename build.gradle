@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'org.mangorage'
-version = '1.0.0'
+version = '1.1.0'
 
 repositories {
     mavenCentral()
@@ -162,15 +162,6 @@ dependencies {
         }
     }
 
-    jarJar(project(":examplemod")) {
-        jarJar.configure(it) {
-            module {
-                group = 'game'
-            }
-            version = '1.1.0'
-        }
-    }
-
     jarJar(project(":mangomodloader-api")) {
         jarJar.configure(it) {
             module {
@@ -208,7 +199,8 @@ test {
 jar {
     manifest {
         attributes(
-                'Main-Class': 'org.mangorage.boot.Boot'
+                'Main-Class': 'org.mangorage.boot.Boot',
+                'Automatic-Module-Name': 'org.mangorage.mangomodloader.boot'
         )
     }
 }

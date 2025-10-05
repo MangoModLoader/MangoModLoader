@@ -4,7 +4,7 @@ import org.mangorage.loader.api.mod.IModContainer;
 import org.mangorage.mixinsupport.mixin.services.MangoBotMixinBlackboardImpl;
 
 open module mixinsupport {
-    requires loader;
+    requires org.mangorage.mangomodloader;
     requires org.spongepowered.mixin;
     requires mixinextras.common;
 
