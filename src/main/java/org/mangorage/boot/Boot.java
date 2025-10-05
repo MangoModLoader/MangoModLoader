@@ -182,6 +182,7 @@ public final class Boot {
 
 
     public static void main(String[] args) throws IOException, URISyntaxException {
+        System.out.println("Booted Game!");
         deleteFolder(Path.of("classpath"));
 
         final var jar = Boot.class.getProtectionDomain().getCodeSource().getLocation();

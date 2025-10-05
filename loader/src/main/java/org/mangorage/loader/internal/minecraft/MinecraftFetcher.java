@@ -58,9 +58,9 @@ public final class MinecraftFetcher {
 
                 } else if (!url.contains("gson")) {
                     if (url.contains("natives") && !url.contains("64") && !url.contains("86") && url.contains("windows")) {
-                        Downloader.downloadFile(url, Path.of("libraries"));
+                        Downloader.downloadFile(url, Path.of("classpath").resolve("gameLibraries"));
                     } else if (!url.contains("natives")) {
-                        Downloader.downloadFile(url, Path.of("libraries"));
+                        Downloader.downloadFile(url, Path.of("classpath").resolve("gameLibraries"));
                     }
                 }
             } catch (IOException | InterruptedException e) {
