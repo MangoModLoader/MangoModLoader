@@ -239,7 +239,7 @@ public final class Boot {
                 ModuleFinder.of(
                         loaderJar.resolve(Path.of("classpath"))
                 ),
-                Set.of("loader", "com.google.gson", "net.minecraftforge.utils.json_data")
+                Set.of("org.mangorage.mangomodloader", "com.google.gson", "net.minecraftforge.utils.json_data")
         );
 
         final List<URL> urls = new ArrayList<>();
@@ -255,7 +255,7 @@ public final class Boot {
         final var moduleLayerController = ModuleLayer.defineModules(moduleCfg, List.of(parent), (s) -> classloader);
 
         final var moduleLayer = moduleLayerController.layer();
-        final var module = moduleLayer.findModule("loader").get();
+        final var module = moduleLayer.findModule("org.mangorage.mangomodloader").get();
         final var ok = moduleLayer.findModule("com.google.gson");
 
         System.out.println(ok.get().getName());

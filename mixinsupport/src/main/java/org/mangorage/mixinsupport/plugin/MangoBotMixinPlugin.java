@@ -7,7 +7,6 @@ public final class MangoBotMixinPlugin implements IModContainer<Object> {
     public static final String ID = "mangobotmixin";
 
     public void init() {
-        Mixins.addConfiguration("examplemod.mixins.json");
     }
 
     @Override
