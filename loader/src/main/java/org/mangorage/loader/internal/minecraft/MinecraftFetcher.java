@@ -49,15 +49,4 @@ public final class MinecraftFetcher {
 
         return a;
     }
-
-
-    public static void downloadLibraries(MinecraftVersion version) {
-
-    }
-
-    public static void main(String[] args) {
-        final var MC = fetch("https://piston-meta.mojang.com/v1/packages/d7a33415a8e68a8fdff87ab2020e64de021df302/1.21.9.json");
-        MinecraftFetcher.downloadLibraries(MC);
-    }
-
 }

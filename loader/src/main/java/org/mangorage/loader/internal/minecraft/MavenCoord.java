@@ -7,13 +7,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
-public record MavenCoord(
-        String group,
-        String artifact,
-        String variant,  // can be null if no classifier
-        String version,
-        Path relativePath
-) {
+public final class MavenCoord {
     /**
      * Converts a MinecraftVersion object into a list of MavenCoords representing all required libraries.
      */
