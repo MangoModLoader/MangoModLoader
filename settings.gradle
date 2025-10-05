@@ -8,9 +8,9 @@ pluginManagement {
 
 }
 
-rootProject.name = 'MinersParadise'
+rootProject.name = 'mangomodloader'
 
-include 'loader'
+include 'mangomodloader-api'
 include 'examplemod'
 include 'mixinsupport'
 include 'installer'

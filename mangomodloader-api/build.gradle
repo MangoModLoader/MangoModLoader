@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'org.mangorage'
-version = '1.0-SNAPSHOT'
+version = '1.0.1'
 
 repositories {
     mavenCentral()
@@ -52,10 +52,10 @@ publishing {
 
     repositories {
         maven {
-            url = "https://maven.mangorage.org/releases/"
+            url = "https://maven.mangorage.org/releases"
             credentials {
-                username = System.getenv("MAVEN_USER")
-                password = System.getenv("MAVEN_PASSWORD")
+                username = "mango"
+                password = "$MAVEN_PASSWORD"
             }
         }
     }

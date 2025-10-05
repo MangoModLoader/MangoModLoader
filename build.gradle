@@ -171,7 +171,7 @@ dependencies {
         }
     }
 
-    jarJar(project(":loader")) {
+    jarJar(project(":mangomodloader-api")) {
         jarJar.configure(it) {
             module {
                 group = 'loader'
@@ -241,10 +241,10 @@ publishing {
 
     repositories {
         maven {
-            url = "https://maven.mangorage.org/releases/"
+            url = "https://maven.mangorage.org/releases"
             credentials {
-                username = System.getenv("MAVEN_USER")
-                password = System.getenv("MAVEN_PASSWORD")
+                username = "mango"
+                password = "$MAVEN_PASSWORD"
             }
         }
     }

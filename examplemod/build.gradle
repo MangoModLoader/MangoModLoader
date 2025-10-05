@@ -62,7 +62,7 @@ dependencies {
 
 
     compileOnly minecraft.dep('net.minecraft:joined:1.21.9')
-    compileOnly(project(":loader"))
+    compileOnly(project(":mangomodloader-api"))
 
     bootJar(project(":"))
     gameJar(minecraft.dep('net.minecraft:joined:1.21.9')) {
