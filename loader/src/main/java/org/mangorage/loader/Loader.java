@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import org.mangorage.loader.internal.JPMSGameClassloader;
 import org.mangorage.loader.internal.Util;
 import org.mangorage.loader.internal.WorkingDialog;
-import org.mangorage.loader.internal.minecraft.MinecraftFetcher;
-import org.mangorage.loader.internal.minecraft.MinecraftGenerator;
+import org.mangorage.loader.internal.minecraft.MavenCoord;
+import org.mangorage.loader.internal.minecraft.mavenizer.MinecraftGenerator;
 
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -93,6 +93,7 @@ public final class Loader {
 
 
     public static void init(String[] args, ModuleLayer parent) throws IOException {
+
         final var dialog = new WorkingDialog();
 
         try {
@@ -100,16 +101,31 @@ public final class Loader {
 
             Thread.sleep(4000);
 
+            if (!Files.exists(Path.of("mods"))) {
+                Files.createDirectories(Path.of("mods"));
+            }
+
             dialog.setText("Generating Minecraft sources");
 
             MinecraftGenerator.generate("1.21.9");
 
+            String userHome = System.getProperty("user.home") + "\\AppData\\Roaming\\";
+            final var minecraftFolder = Path.of(userHome).resolve(".minecraft");
+
+            if (!Files.exists(minecraftFolder)) {
+                throw new IllegalStateException("Unable to find .minecraft in users folder");
+            }
+
             dialog.setText("Booted into JPMS successfully, booting into game now!");
 
-            if (!Files.exists(Path.of("classpath").resolve("gameLibraries"))) {
-                final var MC = fetch("https://piston-meta.mojang.com/v1/packages/d7a33415a8e68a8fdff87ab2020e64de021df302/1.21.9.json");
-                MinecraftFetcher.downloadLibraries(MC);
-            }
+            final var MC = fetch("https://piston-meta.mojang.com/v1/packages/d7a33415a8e68a8fdff87ab2020e64de021df302/1.21.9.json");
+            final var mcLibraries = MavenCoord.fromMinecraftVersion(MC)
+                    .stream()
+                    .map(path -> minecraftFolder.resolve("libraries").resolve(path))
+                    .filter(Files::exists)
+                    .toList();
+
+
 
             List<Path> mods = new ArrayList<>();
             mods.add(Path.of("mavenizer/output/net/minecraft/joined/1.21.9/joined-1.21.9.jar"));
@@ -144,7 +160,12 @@ public final class Loader {
 
             final var librariesPath = Path.of("classpath\\libraries");
             final List<Path> libraries = Files.exists(librariesPath) ? findJarsInFolder(librariesPath) : new ArrayList<>();
-            libraries.addAll(findJarsInFolder(Path.of("classpath").resolve("gameLibraries")));
+            libraries.addAll(
+                    mcLibraries.stream()
+                            .map(path -> minecraftFolder.resolve("libraries").resolve(path))
+                            .toList()
+            );
+
 
             final List<Configuration> parents = new ArrayList<>();
             parents.add(parent.configuration());
@@ -152,8 +173,14 @@ public final class Loader {
 
             Set<String> moduleNames = new HashSet<>();
             moduleNames.addAll(Util.getModuleNames(Path.of("classpath").resolve("libraries")));
-            moduleNames.addAll(Util.getModuleNames(Path.of("classpath").resolve("gameLibraries")));
-            moduleNames.add("joined");
+            moduleNames.addAll(List.of("joined"));
+
+            mcLibraries.stream()
+                    .map(path -> minecraftFolder.resolve("libraries").resolve(path))
+                    .forEach(path -> {
+                        moduleNames.add(Util.getModuleName(path.toFile()));
+                    });
+
             // sun.security.ec
 
             final var moduleCfg = Configuration.resolveAndBind(
@@ -188,23 +215,23 @@ public final class Loader {
 
             String[] MCargs = {
                     "--username", "MangoRage",
-                    "--version", "MangoModLoader Testing Sessions",
+                    "--version", "MangoModLoader",
                     "--assetIndex", "5",
-                    "--uuid", "913bdf0f-2b64-11ed-9fd7-040300000000",
+                    "--uuid", "94b5df2e-2b64-10ed-0007-040300000000",
                     "--clientId", "null",
                     "--xuid", "null",
                     "--userType", "mojang",
                     "--versionType", "release",
                     "--width", "925",
                     "--height", "530",
-                    "--accessToken", "WHAT"
+                    "--accessToken", "none"
             };
 
             dialog.setText("Loading Game...");
             dialog.close();
 
             try {
-                clazz.getMethod("main", String[].class).invoke(null, (Object) MCargs);
+                clazz.getMethod("main", String[].class).invoke(null, args.length == 0 ? (Object) MCargs : (Object) args);
             } catch (Exception e) {
                 e.printStackTrace();
             }

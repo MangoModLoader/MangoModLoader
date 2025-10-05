@@ -1,4 +1,4 @@
-package org.mangorage.loader.internal.minecraft;
+package org.mangorage.loader.internal.minecraft.mavenizer;
 
 import java.io.File;
 import java.io.IOException;

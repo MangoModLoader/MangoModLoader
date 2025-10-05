@@ -187,7 +187,6 @@ public final class Boot {
 
         final var jar = Boot.class.getProtectionDomain().getCodeSource().getLocation();
 
-
         byte[] metadata = fetchFile(
                 jar.toURI().getPath(),
                 "META-INF/jarjar/metadata.json"
@@ -199,6 +198,7 @@ public final class Boot {
 
         final var jars = parseGroupsAndPaths(json);
         final var gsonJar = Path.of("classpath").resolve("loader").resolve("gson.jar").toAbsolutePath();
+        final var utilJar = Path.of("classpath").resolve("loader").resolve("util.jar").toAbsolutePath();
 
         copy(
                 Path.of(Boot.class.getProtectionDomain().getCodeSource().getLocation().toURI()),
@@ -206,11 +206,18 @@ public final class Boot {
                 gsonJar
         );
 
+        copy(
+                Path.of(Boot.class.getProtectionDomain().getCodeSource().getLocation().toURI()),
+                "internal/json-data-utils-0.2.3.jar",
+                utilJar
+        );
+
         extractJars(
                 Path.of(Boot.class.getProtectionDomain().getCodeSource().getLocation().toURI()),
                 jars,
                 Path.of("classpath")
         );
+
 
         final var parent = ModuleLayer.boot();
         final var loaderJar = jars.stream()
@@ -222,7 +229,7 @@ public final class Boot {
 
         final var moduleCfg = Configuration.resolveAndBind(
                 ModuleFinder.of(
-                        gsonJar
+                        gsonJar, utilJar
                 ),
                 List.of(
                         parent.configuration()
@@ -230,12 +237,13 @@ public final class Boot {
                 ModuleFinder.of(
                         loaderJar.resolve(Path.of("classpath"))
                 ),
-                Set.of("loader", "com.google.gson")
+                Set.of("loader", "com.google.gson", "net.minecraftforge.utils.json_data")
         );
 
         final List<URL> urls = new ArrayList<>();
         urls.add(loaderJar.resolve(Path.of("classpath")).toUri().toURL());
         urls.add(gsonJar.toUri().toURL());
+        urls.add(utilJar.toUri().toURL());
 
         final var classloader = new URLClassLoader(
                 urls.toArray(URL[]::new),
@@ -243,8 +251,12 @@ public final class Boot {
         );
 
         final var moduleLayerController = ModuleLayer.defineModules(moduleCfg, List.of(parent), (s) -> classloader);
+
         final var moduleLayer = moduleLayerController.layer();
         final var module = moduleLayer.findModule("loader").get();
+        final var ok = moduleLayer.findModule("com.google.gson");
+
+        System.out.println(ok.get().getName());
 
         Thread.currentThread().setContextClassLoader(classloader);
 

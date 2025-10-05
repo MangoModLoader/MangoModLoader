@@ -5,6 +5,7 @@ module loader {
     requires java.naming;
 
     requires com.google.gson;
+    requires net.minecraftforge.utils.json_data;
 
     exports org.mangorage.loader.api;
     exports org.mangorage.loader.api.mod;
@@ -12,6 +13,7 @@ module loader {
     opens org.mangorage.loader;
 
     opens org.mangorage.loader.internal.minecraft to com.google.gson;
+    opens org.mangorage.loader.internal.minecraft.mavenizer to com.google.gson;
 
     uses org.mangorage.loader.api.IClassTransformer;
     uses org.mangorage.loader.api.IModuleConfigurator;
