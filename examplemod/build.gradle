@@ -1,9 +1,27 @@
+
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        mavenLocal()
+        maven {
+            url = "https://maven.mangorage.org/releases/"
+        }
+    }
+
+    dependencies {
+        classpath 'org.mangorage:mangomodloadergradle:1.0.0'
+    }
+}
+
+
 plugins {
     id 'java'
     id "net.minecraftforge.jarjar" version "0.1.0"
     id 'org.gradlex.extra-java-module-info' version '1.12'
     id 'net.minecraftforge.gradle' version '+'
 }
+
+apply plugin: 'MML'
 
 group = 'org.mangorage'
 version = '1.0-SNAPSHOT'
@@ -14,6 +32,7 @@ jarJar.register() {
 
 extraJavaModuleInfo {
     setDeriveAutomaticModuleNamesFromFileNames(true)
+    automaticModule('net.minecraft:joined', "minecraft")
 }
 
 
@@ -41,9 +60,16 @@ dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
-    compileOnly project(":loader")
 
     compileOnly minecraft.dep('net.minecraft:joined:1.21.9')
+    compileOnly(project(":loader"))
+
+    bootJar(project(":"))
+    gameJar(minecraft.dep('net.minecraft:joined:1.21.9')) {
+        attributes {
+            attribute(Attribute.of("net.minecraftforge.native.operatingSystem", String), "windows")
+        }
+    }
 
     compileOnly 'cpw.mods:modlauncher:+'
     compileOnly 'org.apache.logging.log4j:log4j-api:2.24.1'
@@ -52,6 +78,7 @@ dependencies {
     compileOnly('io.github.llamalad7:mixinextras-common:0.4.1')
 
     compileOnly 'org.json:json:20240303'
+
 
     // 'org.json:json:20240303'
 
@@ -69,3 +96,5 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+tasks.getByName("runMCGame").dependsOn(":build")

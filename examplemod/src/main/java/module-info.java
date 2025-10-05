@@ -2,7 +2,7 @@ module examplemod {
     requires org.json;
     requires loader;
     requires static org.spongepowered.mixin;
-    requires static joined;
+    requires static minecraft;
 
     opens org.mangorage.example to loader;
 

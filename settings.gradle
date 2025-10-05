@@ -1,6 +1,7 @@
 pluginManagement {
     repositories {
         mavenCentral()
+        mavenLocal()
         gradlePluginPortal()
         maven { url = 'https://maven.minecraftforge.net' }
     }
@@ -12,4 +13,4 @@ rootProject.name = 'MinersParadise'
 include 'loader'
 include 'examplemod'
 include 'mixinsupport'
-
+include 'installer'

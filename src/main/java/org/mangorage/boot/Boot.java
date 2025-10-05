@@ -187,6 +187,8 @@ public final class Boot {
 
         final var jar = Boot.class.getProtectionDomain().getCodeSource().getLocation();
 
+        System.out.println(jar);
+
         byte[] metadata = fetchFile(
                 jar.toURI().getPath(),
                 "META-INF/jarjar/metadata.json"

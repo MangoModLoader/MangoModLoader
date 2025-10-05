@@ -3,10 +3,11 @@ import  net.minecraftforge.jarjar.gradle.JarJar;
 plugins {
     id 'java'
     id "net.minecraftforge.jarjar" version "0.1.0"
+    id 'maven-publish'
 }
 
 group = 'org.mangorage'
-version = '1.0-SNAPSHOT'
+version = '1.0.0'
 
 repositories {
     mavenCentral()
@@ -212,31 +213,42 @@ jar {
     }
 }
 
-tasks.getByName("jarJar").dependsOn("mixinsupport:build", "examplemod:build")
 
-task runGame(type: JavaExec) {
-    dependsOn(":jarJar")
+publishing {
+    publications {
+        register("mangomodloader", MavenPublication) {
+            artifact tasks.named("jarJar").get()  // <- this replaces 'jar'
+            // artifact sourcesJar
+            // artifact javadocJar
 
-    group = 'application'
-    description = "Runs the built game jar (debuggable)"
-
-    def runDir = file("$buildDir/run")
-    def jarFile = tasks.named('jarJar', JarJar).flatMap(JarJar.&getArchiveFile).get()
-
-    doFirst {
-        if (!runDir.exists()) {
-            runDir.mkdirs()
+            pom {
+                name = 'MangoModLoader'
+                description = 'MangoModLoader'
+                url = 'https://github.com/MangoModLoader/MangoModLoader'
+                issueManagement {
+                    system = 'github'
+                    url = 'https://github.com/MangoModLoader/MangoModLoader/issues'
+                }
+                developers {
+                    developer {
+                        id = 'mangorage'
+                        name = 'MangoRage'
+                    }
+                }
+            }
         }
     }
 
-    workingDir = runDir
-
-    // Instead of classpath + mainClass, we just tell it "run this jar"
-    mainClass = "-jar"
-    args = [jarFile]
-
-    // Optional: enable remote debugging
-    jvmArgs = [
-            "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"
-    ]
+    repositories {
+        maven {
+            url = "https://maven.mangorage.org/releases/"
+            credentials {
+                username = System.getenv("MAVEN_USER")
+                password = System.getenv("MAVEN_PASSWORD")
+            }
+        }
+    }
 }
+
+
+tasks.getByName("jarJar").dependsOn("mixinsupport:build", "examplemod:build")

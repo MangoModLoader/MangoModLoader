@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 group = 'org.mangorage'
@@ -24,4 +25,38 @@ dependencies {
 
 test {
     useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        register("mangomodloader-api", MavenPublication) {
+            artifact jar // uses the API subproject's jar + sources/javadoc if configured
+
+            pom {
+                name = 'MangoModLoader API'
+                description = 'API module for MangoModLoader'
+                url = 'https://github.com/MangoModLoader/MangoModLoader'
+                issueManagement {
+                    system = 'github'
+                    url = 'https://github.com/MangoModLoader/MangoModLoader/issues'
+                }
+                developers {
+                    developer {
+                        id = 'mangorage'
+                        name = 'MangoRage'
+                    }
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url = "https://maven.mangorage.org/releases/"
+            credentials {
+                username = System.getenv("MAVEN_USER")
+                password = System.getenv("MAVEN_PASSWORD")
+            }
+        }
+    }
 }

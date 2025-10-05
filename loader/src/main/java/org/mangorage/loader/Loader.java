@@ -92,6 +92,10 @@ public final class Loader {
         }
     }
 
+    public static Path locateMinecraft() {
+        return Path.of("classpath-game\\minecraft.jar");
+    }
+
 
     public static void init(String[] args, ModuleLayer parent) throws IOException {
 
@@ -107,8 +111,6 @@ public final class Loader {
             }
 
             dialog.setText("Generating Minecraft sources for version " + Constants.MINECRAFT_VERSION);
-
-            MinecraftGenerator.generate(Constants.MINECRAFT_VERSION);
 
             String userHome = System.getProperty("user.home") + "\\AppData\\Roaming\\";
             final var minecraftFolder = Path.of(userHome).resolve(".minecraft");
@@ -127,7 +129,8 @@ public final class Loader {
                     .toList();
 
             List<Path> mods = new ArrayList<>();
-            mods.add(Path.of("mavenizer/output/net/minecraft/joined/1.21.9/joined-1.21.9.jar"));     // TODO: Get rid of Mavenizer eventually
+            System.out.println(locateMinecraft().toAbsolutePath());
+            mods.add(locateMinecraft());
             mods.addAll(findJarsInFolder(Path.of("classpath\\game")));
             mods.addAll(findJarsInFolder(Path.of("mods")));
 
@@ -172,7 +175,7 @@ public final class Loader {
 
             Set<String> moduleNames = new HashSet<>();
             moduleNames.addAll(Util.getModuleNames(Path.of("classpath").resolve("libraries")));
-            moduleNames.addAll(List.of("joined"));     // TODO: Get rid of Mavenizer eventually
+            moduleNames.addAll(List.of("minecraft"));
 
             mcLibraries.stream()
                     .map(path -> minecraftFolder.resolve("libraries").resolve(path))
@@ -200,7 +203,7 @@ public final class Loader {
             Thread.currentThread().setContextClassLoader(classloader);
 
 
-            final var joinedModule = moduleLayer.findModule("joined").get();
+            final var joinedModule = moduleLayer.findModule("minecraft").get();
             final var lwjglModule = moduleLayer.findModule("org.lwjgl").get();
 
             moduleLayerController.addReads(joinedModule, lwjglModule);
