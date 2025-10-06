@@ -217,7 +217,7 @@ public final class Loader {
 
             String[] MCargs = {
                     "--username", "MangoRage",
-                    "--version", "MangoModLoader",
+                    "--version", "MangoModLoader " + Constants.MINECRAFT_VERSION + " Loader " + Constants.LOADER_VERSION,
                     "--assetIndex", "5",
                     "--uuid", "94b5df2e-2b64-10ed-0007-040300000000",
                     "--clientId", "null",
