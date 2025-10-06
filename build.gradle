@@ -1,4 +1,18 @@
-import  net.minecraftforge.jarjar.gradle.JarJar;
+import  org.mangorage.mmlg.util.GitVersion;
+
+buildscript {
+    repositories {
+        gradlePluginPortal()
+        mavenLocal()
+        maven {
+            url = "https://maven.mangorage.org/releases/"
+        }
+    }
+
+    dependencies {
+        classpath 'org.mangorage:mangomodloadergradle:1.0.4'
+    }
+}
 
 plugins {
     id 'java'
@@ -7,7 +21,9 @@ plugins {
 }
 
 group = 'org.mangorage'
-version = '1.1.3'
+version = GitVersion.getGitVersion().getVersionAsString()
+
+System.out.println(version)
 
 repositories {
     mavenCentral()
