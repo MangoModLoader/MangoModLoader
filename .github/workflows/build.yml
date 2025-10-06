@@ -22,4 +22,4 @@ jobs:
       author_icon_url: "https://avatars.githubusercontent.com/u/147930550"
     secrets:
       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
-      MAVEN_PASSWORD: ${{ secrets.PASSWORD }}  # Reference the secret
+      MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}  # Reference the secret
