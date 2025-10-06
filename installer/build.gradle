@@ -61,7 +61,7 @@ tasks.named("jarJar") {
 
 publishing {
     publications {
-        register("mangomodloader", MavenPublication) {
+        register("mangomodloader-installer", MavenPublication) {
             artifact tasks.named("jarJar").get()  // <- this replaces 'jar'
             // artifact sourcesJar
             // artifact javadocJar
