@@ -1,0 +1,25 @@
+name: Build MangoBot
+on:
+  push:
+    branches: [ "master" ]
+    paths:
+      - 'src/**'  # Only trigger when files inside /src change
+      - 'build.gradle'  # Include Gradle build script changes
+      - 'settings.gradle'  # Include Gradle settings changes
+      - 'gradle/**'  # Include Gradle wrapper changes
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    uses: MinecraftForge/SharedActions/.github/workflows/gradle.yml@v0
+    with:
+      java: 21
+      gradle_tasks: :publish
+      artifact_name: "mangomodloader"
+      artifact_group: "org.mangorage"
+      author_icon_url: "https://avatars.githubusercontent.com/u/147930550"
+    secrets:
+      DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      MAVEN_PASSWORD: ${{ secrets.PASSWORD }}  # Reference the secret

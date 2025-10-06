@@ -9,7 +9,7 @@ plugins {
 }
 
 group = 'org.mangorage'
-version = GitVersion.getGitVersion().getVersionAsString()
+version = GitVersion.getGitVersion().getVersionAsString() + "$TAG_APPEND"
 
 System.out.println(version)
 
@@ -44,7 +44,7 @@ subprojects { subproject ->
     apply plugin: 'java'
     apply plugin: "net.minecraftforge.jarjar"
 
-    version = GitVersion.getGitVersion().getVersionAsString()
+    version = GitVersion.getGitVersion().getVersionAsString() + "$TAG_APPEND"
     println "${subproject.name} -> ${version}"
 
     // Only create generateResource in specific subprojects
