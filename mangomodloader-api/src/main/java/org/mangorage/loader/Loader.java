@@ -6,8 +6,6 @@ import org.mangorage.loader.internal.JPMSGameClassloader;
 import org.mangorage.loader.internal.Util;
 import org.mangorage.loader.internal.WorkingDialog;
 import org.mangorage.loader.internal.minecraft.MavenCoord;
-import org.mangorage.loader.internal.minecraft.mavenizer.MinecraftGenerator;
-
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -30,6 +28,8 @@ import java.util.zip.ZipEntry;
 import static org.mangorage.loader.internal.minecraft.MinecraftFetcher.fetch;
 
 public final class Loader {
+    private static final String GAME_MODULE = "minecraft";
+
     private static final Gson GSON = new Gson();
 
     public static List<Path> findJarsInFolder(Path folder) throws IOException {
@@ -93,7 +93,9 @@ public final class Loader {
     }
 
     public static Path locateMinecraft() {
-        return Path.of("classpath-game\\minecraft.jar");
+        final var locatedJar = Path.of("classpath-game\\minecraft.jar");
+        if (Files.exists(locatedJar)) return locatedJar;
+        return Path.of("F:\\Discord Bot Projects\\MangoModLoader\\build\\run\\classpath-game\\minecraft.jar");
     }
 
 
@@ -175,7 +177,7 @@ public final class Loader {
 
             Set<String> moduleNames = new HashSet<>();
             moduleNames.addAll(Util.getModuleNames(Path.of("classpath").resolve("libraries")));
-            moduleNames.addAll(List.of("minecraft"));
+            moduleNames.add(GAME_MODULE);
 
             mcLibraries.stream()
                     .map(path -> minecraftFolder.resolve("libraries").resolve(path))
@@ -202,8 +204,7 @@ public final class Loader {
 
             Thread.currentThread().setContextClassLoader(classloader);
 
-
-            final var joinedModule = moduleLayer.findModule("minecraft").get();
+            final var joinedModule = moduleLayer.findModule(GAME_MODULE).get();
             final var lwjglModule = moduleLayer.findModule("org.lwjgl").get();
 
             moduleLayerController.addReads(joinedModule, lwjglModule);

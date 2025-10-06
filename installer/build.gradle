@@ -4,6 +4,10 @@ plugins {
 
 group = 'org.mangorage'
 
+jarJar.register() {
+    it.archiveClassifier = ""
+}
+
 repositories {
     mavenCentral()
 }
@@ -11,8 +15,31 @@ repositories {
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+
+    jarJar(project(":"))
 }
 
 test {
     useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'org.mangorage.mml.installer.Installer'
+        )
+    }
+}
+
+// Task to run the jar after building
+task runInstaller(type: Exec) {
+    dependsOn jar // make sure the jar is built first
+    group "installer"
+    commandLine 'java', '-jar', jar.archiveFile.get().asFile.absolutePath
+}
+
+// Make sure installer:jarJar depends on the main jar tasks
+tasks.named("jarJar") {
+    dependsOn(":jar")       // ensure the regular jar runs first
+    dependsOn(":jarJar")    // if it's supposed to depend on another jarJar task
 }

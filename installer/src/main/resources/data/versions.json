@@ -1,0 +1,13 @@
+{
+  "id": "{ID}",
+  "inheritsFrom": "{MC_VERSION}",
+  "releaseTime": "{RELEASE_TIME}",
+  "time": "{TIME}",
+  "type": "release",
+  "mainClass": "org.mangorage.boot.Boot",
+  "libraries": [
+    {
+      "name": "{wrapper}"
+    }
+  ]
+}

@@ -222,6 +222,14 @@ public final class Boot {
 
 
         final var parent = ModuleLayer.boot();
+
+        System.out.println(parent);
+        System.out.println("PARENTS");
+
+        parent.parents().forEach(layer -> {
+            System.out.println(layer);
+        });
+
         final var loaderJar = jars.stream()
                 .filter(info -> info.layer().contains("loader"))
                 .filter(info -> info.jar().contains("loader"))
@@ -249,7 +257,7 @@ public final class Boot {
 
         final var classloader = new URLClassLoader(
                 urls.toArray(URL[]::new),
-                Thread.currentThread().getContextClassLoader()
+                Thread.currentThread().getContextClassLoader().getParent()
         );
 
         final var moduleLayerController = ModuleLayer.defineModules(moduleCfg, List.of(parent), (s) -> classloader);

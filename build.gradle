@@ -42,6 +42,7 @@ java {
 
 subprojects {
     apply plugin: 'java'  // Ensure the java plugin is applied
+    apply plugin: "net.minecraftforge.jarjar"
 
     version = GitVersion.getGitVersion().getVersionAsString()
     System.out.println(getProject().getDisplayName() + " -> " + version)
