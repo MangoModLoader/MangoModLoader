@@ -1,12 +1,5 @@
 name: Build MangoModLoader
-on:
-  push:
-    branches: [ "master" ]
-    paths:
-      - 'src/**'  # Only trigger when files inside /src change
-      - 'build.gradle'  # Include Gradle build script changes
-      - 'settings.gradle'  # Include Gradle settings changes
-      - 'gradle/**'  # Include Gradle wrapper changes
+on: push
 
 permissions:
   contents: write

@@ -1,4 +1,4 @@
-package org.mangorage.loader.internal;
+package org.mangorage.loader.internal.util;
 
 import javax.swing.*;
 

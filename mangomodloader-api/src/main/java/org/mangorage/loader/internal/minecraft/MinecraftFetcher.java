@@ -4,12 +4,9 @@ import com.google.gson.Gson;
 import net.minecraftforge.util.data.json.MinecraftVersion;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.file.Path;
-import java.util.List;
 
 public final class MinecraftFetcher {
     public static String readUrl(String urlString) throws Exception {
