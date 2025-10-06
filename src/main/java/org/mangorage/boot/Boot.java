@@ -46,6 +46,7 @@ import java.util.zip.ZipEntry;
  */
 public final class Boot {
 
+
     // Extracts multiple jars into folders by delegating to copy()
     public static void extractJars(Path sourceJar, List<MetadataInfo> jars, Path outputRoot) throws IOException {
         for (MetadataInfo info : jars) {
