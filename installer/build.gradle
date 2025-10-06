@@ -21,7 +21,15 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     jarJar(project(":"))
-    jarJar('net.minecraftforge:minecraft-mavenizer:0.3.19')
+    jarJar(files('libs/minecraft-mavenizer-0.3.21.jar')) {
+        jarJar.configure(it) {
+            module {
+                group = 'net.minecraftforge'
+                version = "0.3.21"
+            }
+            name = "minecraft-mavenizer"
+        }
+    }
 }
 
 test {

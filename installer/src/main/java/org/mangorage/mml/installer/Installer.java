@@ -179,7 +179,6 @@ public final class Installer {
                     bootName
             );
 
-            // TODO: Generate MC Jar and move/rename into libraries/org/mangorage/minecraft/
             JarRunner.generate(mavenizerJar, mcVersion);
 
             final var joinedJar = Path.of("output").resolve(JarRunner.resolveJoinedJar(mcVersion));
