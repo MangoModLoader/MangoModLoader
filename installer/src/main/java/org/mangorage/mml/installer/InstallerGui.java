@@ -2,13 +2,11 @@ package org.mangorage.mml.installer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.io.File;
-
 
 public final class InstallerGui {
     public static void createAndShowGUI() {
-        JFrame frame = new JFrame("Installer");
+        JFrame frame = new JFrame("MangoModLoader Installer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(420, 200);
         frame.setLocationRelativeTo(null);

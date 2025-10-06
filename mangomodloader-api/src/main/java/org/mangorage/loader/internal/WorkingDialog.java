@@ -13,7 +13,7 @@ public final class WorkingDialog {
         frame.setUndecorated(true);
         frame.setType(JFrame.Type.UTILITY);
 
-        dialog = new JDialog(frame, "Working...", false); // not modal
+        dialog = new JDialog(frame, "MangoModLoader", false); // not modal
         dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         dialog.setAlwaysOnTop(true);
 

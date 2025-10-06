@@ -154,7 +154,7 @@ public final class Installer {
                     .findAny().get();
 
             final var versionsJson = Path.of("output/jar-resources/META-INF/data/versions.json");
-            final var buildInfo = Path.of("output/jar-resources/META-INF/internal/mangomodloader/buildInfo.properties");
+            final var buildInfo = Path.of("output/jar-resources/META-INF/mangomodloader/buildInfo.properties");
 
             System.out.println("Found -> " + mavenizerJar.toAbsolutePath());
             System.out.println("Found -> " + loaderJar.toAbsolutePath());

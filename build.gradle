@@ -54,10 +54,10 @@ subprojects { subproject ->
             outputs.dir outputDir
 
             doLast {
-                def file = file("$outputDir/META-INF/internal/mangomodloader/buildinfo.properties")
+                def file = file("$outputDir/META-INF/mangomodloader/buildinfo.properties")
                 file.parentFile.mkdirs()
                 file.text = """
-                    version=${project.version}
+                    version=${version}
                     mc_version=${MC_VERSION}
                     buildTime=${new Date().format("yyyy-MM-dd'T'HH:mm:ss")}
                 """.stripIndent()
