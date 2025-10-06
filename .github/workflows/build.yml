@@ -1,4 +1,4 @@
-name: Build MangoBot
+name: Build MangoModLoader
 on:
   push:
     branches: [ "master" ]
@@ -22,4 +22,5 @@ jobs:
       author_icon_url: "https://avatars.githubusercontent.com/u/147930550"
     secrets:
       DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+      MAVEN_USER: "mango"
       MAVEN_PASSWORD: ${{ secrets.MAVEN_PASSWORD }}  # Reference the secret
