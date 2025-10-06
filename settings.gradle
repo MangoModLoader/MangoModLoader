@@ -4,6 +4,9 @@ pluginManagement {
         mavenLocal()
         gradlePluginPortal()
         maven { url = 'https://maven.minecraftforge.net' }
+        maven {
+            url = "https://maven.mangorage.org/releases"
+        }
     }
 
 }
@@ -11,6 +14,5 @@ pluginManagement {
 rootProject.name = 'mangomodloader'
 
 include 'mangomodloader-api'
-include 'examplemod'
 include 'mixinsupport'
 include 'installer'

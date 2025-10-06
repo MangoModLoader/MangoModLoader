@@ -256,9 +256,6 @@ public final class Boot {
 
         final var moduleLayer = moduleLayerController.layer();
         final var module = moduleLayer.findModule("org.mangorage.mangomodloader").get();
-        final var ok = moduleLayer.findModule("com.google.gson");
-
-        System.out.println(ok.get().getName());
 
         Thread.currentThread().setContextClassLoader(classloader);
 

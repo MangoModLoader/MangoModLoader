@@ -10,7 +10,6 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/examplemod" />
             <option value="$PROJECT_DIR$/installer" />
             <option value="$PROJECT_DIR$/mangomodloader-api" />
             <option value="$PROJECT_DIR$/mixinsupport" />
