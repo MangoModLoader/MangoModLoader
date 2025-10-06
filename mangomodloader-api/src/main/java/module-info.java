@@ -13,7 +13,6 @@ module org.mangorage.mangomodloader {
     opens org.mangorage.loader;
 
     opens org.mangorage.loader.internal.minecraft to com.google.gson;
-    opens org.mangorage.loader.internal.minecraft.mavenizer to com.google.gson;
 
     uses org.mangorage.loader.api.IClassTransformer;
     uses org.mangorage.loader.api.IModuleConfigurator;
