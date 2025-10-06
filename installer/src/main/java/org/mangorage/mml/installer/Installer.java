@@ -1,5 +1,6 @@
 package org.mangorage.mml.installer;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -218,7 +219,6 @@ public final class Installer {
     }
 
     public static void main(String[] args) {
-        // Install Client
-
+        SwingUtilities.invokeLater(InstallerGui::createAndShowGUI);
     }
 }
