@@ -24,7 +24,6 @@ plugins {
 apply plugin: 'MML'
 
 group = 'org.mangorage'
-version = '1.0-SNAPSHOT'
 
 jarJar.register() {
     it.archiveClassifier = ""
@@ -34,7 +33,6 @@ extraJavaModuleInfo {
     setDeriveAutomaticModuleNamesFromFileNames(true)
     automaticModule('net.minecraft:joined', "minecraft")
 }
-
 
 repositories {
     mavenCentral()

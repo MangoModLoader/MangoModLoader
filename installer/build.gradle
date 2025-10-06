@@ -3,7 +3,6 @@ plugins {
 }
 
 group = 'org.mangorage'
-version = '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()

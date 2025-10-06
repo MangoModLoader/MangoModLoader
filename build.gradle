@@ -50,6 +50,9 @@ java {
 subprojects {
     apply plugin: 'java'  // Ensure the java plugin is applied
 
+    version = GitVersion.getGitVersion().getVersionAsString()
+    System.out.println(getProject().getDisplayName() + " -> " + version)
+
     java {
         toolchain {
             languageVersion = JavaLanguageVersion.of(21)
