@@ -14,7 +14,7 @@ public final class Constants {
 
     static {
         Properties properties = new Properties();
-        try (InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("internal/buildinfo.properties")) {
+        try (InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream("META-INF/internal/mangomodloader/buildinfo.properties")) {
             if (in != null) {
                 properties.load(in);
             } else {

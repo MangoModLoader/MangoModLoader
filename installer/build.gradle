@@ -10,6 +10,9 @@ jarJar.register() {
 
 repositories {
     mavenCentral()
+    maven {
+        url = "https://maven.mangorage.org/releases"
+    }
 }
 
 dependencies {
@@ -17,6 +20,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     jarJar(project(":"))
+    jarJar('net.minecraftforge:minecraft-mavenizer:0.3.19')
 }
 
 test {
@@ -33,8 +37,18 @@ jar {
 
 // Task to run the jar after building
 task runInstaller(type: Exec) {
-    dependsOn jar // make sure the jar is built first
+    dependsOn tasks.getByName("jarJar") // make sure the jar is built first
     group "installer"
+
+    // working directory
+    def runDir = file("build/run")
+    setWorkingDir(runDir)
+
+    // ensure folder exists before running
+    doFirst {
+        runDir.mkdirs()
+    }
+
     commandLine 'java', '-jar', jar.archiveFile.get().asFile.absolutePath
 }
 

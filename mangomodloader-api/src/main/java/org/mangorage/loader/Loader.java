@@ -95,7 +95,8 @@ public final class Loader {
     public static Path locateMinecraft() {
         final var locatedJar = Path.of("classpath-game\\minecraft.jar");
         if (Files.exists(locatedJar)) return locatedJar;
-        return Path.of("F:\\Discord Bot Projects\\MangoModLoader\\build\\run\\classpath-game\\minecraft.jar");
+        final var minecraftVersion = Constants.MINECRAFT_VERSION + "-" + Constants.LOADER_VERSION;
+        return Path.of("libraries/org/mangorage/minecraft/" + minecraftVersion + "/" + "minecraft-" + minecraftVersion + ".jar");
     }
 
 

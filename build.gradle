@@ -40,12 +40,35 @@ java {
     }
 }
 
-subprojects {
-    apply plugin: 'java'  // Ensure the java plugin is applied
+subprojects { subproject ->
+    apply plugin: 'java'
     apply plugin: "net.minecraftforge.jarjar"
 
     version = GitVersion.getGitVersion().getVersionAsString()
-    System.out.println(getProject().getDisplayName() + " -> " + version)
+    println "${subproject.name} -> ${version}"
+
+    // Only create generateResource in specific subprojects
+    if (subproject.name in ['installer', 'mangomodloader-api']) {
+        tasks.register('generateResource') {
+            def outputDir = "$buildDir/generated-resources"
+            outputs.dir outputDir
+
+            doLast {
+                def file = file("$outputDir/META-INF/internal/mangomodloader/buildinfo.properties")
+                file.parentFile.mkdirs()
+                file.text = """
+                    version=${project.version}
+                    mc_version=${MC_VERSION}
+                    buildTime=${new Date().format("yyyy-MM-dd'T'HH:mm:ss")}
+                """.stripIndent()
+            }
+        }
+
+        subproject.tasks.named('processResources') {
+            from("$buildDir/generated-resources")
+            dependsOn(tasks.named('generateResource'))
+        }
+    }
 
     java {
         toolchain {
@@ -59,7 +82,7 @@ subprojects {
 }
 
 minecraft {
-    mappings channel: 'official', version: '1.21.9'
+    mappings channel: 'official', version: "${MC_VERSION}"
 }
 
 dependencies {
@@ -67,7 +90,7 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 
     bootJar(project(":"))
-    gameJar(minecraft.dep('net.minecraft:joined:1.21.9')) {
+    gameJar(minecraft.dep("net.minecraft:joined:${MC_VERSION}")) {
         attributes {
             attribute(Attribute.of("net.minecraftforge.native.operatingSystem", String), "windows")
         }
@@ -192,14 +215,6 @@ dependencies {
                 group = 'loader'
             }
             version = '2.0.0'
-        }
-    }
-
-    jarJar(compileOnly('net.minecraftforge:minecraft-mavenizer:0.3.19')) {
-        jarJar.configure(it) {
-            module {
-                group = 'mavenizer'
-            }
         }
     }
 
