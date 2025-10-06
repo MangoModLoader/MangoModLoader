@@ -9,7 +9,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'org.mangorage:mangomodloadergradle:1.0.0'
+        classpath 'org.mangorage:mangomodloadergradle:1.1.0'
     }
 }
 

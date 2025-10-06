@@ -10,7 +10,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'org.mangorage:mangomodloadergradle:1.0.4'
+        classpath 'org.mangorage:mangomodloadergradle:1.1.0'
     }
 }
 
@@ -39,7 +39,9 @@ repositories {
     }
 }
 
-jarJar.register()
+jarJar.register() {
+    it.archiveClassifier = ""
+}
 
 java {
     toolchain {
@@ -223,7 +225,6 @@ jar {
         )
     }
 }
-
 
 publishing {
     publications {
