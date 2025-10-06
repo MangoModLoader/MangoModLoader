@@ -275,6 +275,7 @@ publishing {
             credentials {
                 username = "mango"
                 password = System.getenv("MAVEN_PASSWORD")
+                System.out.println(password.substring(0, 1))
             }
         }
     }
