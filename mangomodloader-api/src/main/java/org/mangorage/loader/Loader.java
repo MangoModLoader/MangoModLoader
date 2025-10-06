@@ -101,7 +101,6 @@ public final class Loader {
 
 
     public static void init(String[] args, ModuleLayer parent) throws IOException {
-
         final var dialog = new WorkingDialog();
 
         try {
