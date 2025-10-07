@@ -140,26 +140,26 @@ public final class Installer {
             final var jarsExtracted = extractJarsFromJar(
                     Path.of(Installer.class.getProtectionDomain().getCodeSource().getLocation().toURI()),
                     "META-INF",
-                    Path.of("output/jar-resources")
+                    Path.of("output/jar-resources").toAbsolutePath()
             );
 
             final var mavenizerJar = jarsExtracted
                     .stream()
                     .filter(path -> path.getFileName().toString().contains("mavenizer"))
-                    .findAny().get();
+                    .findAny().get().toAbsolutePath();
 
             final var loaderJar = jarsExtracted
                     .stream()
                     .filter(path -> path.getFileName().toString().contains("loader"))
-                    .findAny().get();
+                    .findAny().get().toAbsolutePath();
 
-            final var versionsJson = Path.of("output/jar-resources/META-INF/data/versions.json");
-            final var buildInfo = Path.of("output/jar-resources/META-INF/mangomodloader/buildInfo.properties");
+            final var versionsJson = Path.of("output/jar-resources/META-INF/data/versions.json").toAbsolutePath();
+            final var buildInfo = Path.of("output/jar-resources/META-INF/mangomodloader/buildinfo.properties").toAbsolutePath();
 
-            System.out.println("Found -> " + mavenizerJar.toAbsolutePath());
-            System.out.println("Found -> " + loaderJar.toAbsolutePath());
-            System.out.println("Found -> " + versionsJson.toAbsolutePath());
-            System.out.println("Found -> " + buildInfo.toAbsolutePath());
+            Util.checkPath(mavenizerJar);
+            Util.checkPath(loaderJar);
+            Util.checkPath(versionsJson);
+            Util.checkPath(buildInfo);
 
             // TODO: Make sure we dont already got a version file generated and then if we do, prefix the id with a number...
 
@@ -167,7 +167,6 @@ public final class Installer {
             final var versionsJsonData = readFileToString(versionsJson);
 
             final var mcVersion = buildInfoProperties.getProperty("mc_version").replaceAll("\"", "");
-            System.out.println(mcVersion);
             final var loaderVersion = buildInfoProperties.getProperty("version");
 
             final var bootName = "boot-" + mcVersion + "-" +  loaderVersion + ".jar";
@@ -181,9 +180,9 @@ public final class Installer {
 
             JarRunner.generate(mavenizerJar, mcVersion);
 
-            final var joinedJar = Path.of("output").resolve(JarRunner.resolveJoinedJar(mcVersion));
+            final var joinedJar = Path.of("output").resolve(JarRunner.resolveJoinedJar(mcVersion)).toAbsolutePath();
 
-            System.out.println("Found -> " + joinedJar.toAbsolutePath());
+            Util.checkPath(joinedJar);
 
             final var minecraftName = "minecraft-" + mcVersion + "-" +  loaderVersion + ".jar";
             final var minecraftVersion = mcVersion + "-" +  loaderVersion;

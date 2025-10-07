@@ -99,6 +99,15 @@ public final class Loader {
         return Path.of("libraries/org/mangorage/minecraft/" + minecraftVersion + "/" + "minecraft-" + minecraftVersion + ".jar");
     }
 
+    public static Path getBaseFolder() {
+        if (Files.exists(Path.of("libraries"))) {
+            return Path.of("");
+        }
+
+        String userHome = System.getProperty("user.home") + "\\AppData\\Roaming\\";
+        return Path.of(userHome).resolve(".minecraft");
+    }
+
 
     public static void init(String[] args, ModuleLayer parent) throws IOException {
         final var dialog = new WorkingDialog();
@@ -114,8 +123,7 @@ public final class Loader {
 
             dialog.setText("Generating Minecraft sources for version " + Constants.MINECRAFT_VERSION);
 
-            String userHome = System.getProperty("user.home") + "\\AppData\\Roaming\\";
-            final var minecraftFolder = Path.of(userHome).resolve(".minecraft");
+            final var minecraftFolder = getBaseFolder();
 
             if (!Files.exists(minecraftFolder)) {
                 throw new IllegalStateException("Unable to find .minecraft in users folder");

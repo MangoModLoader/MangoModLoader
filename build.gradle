@@ -1,4 +1,7 @@
-import  org.mangorage.mmlg.util.GitVersion;
+import  org.mangorage.mmlg.util.GitVersion
+
+import java.nio.file.Files
+import java.nio.file.Paths;
 
 plugins {
     id 'java'
@@ -53,6 +56,10 @@ subprojects { subproject ->
             def outputDir = "$buildDir/generated-resources"
             outputs.dir outputDir
 
+            doFirst {
+                def file = Paths.get("$outputDir/META-INF/mangomodloader/buildinfo.properties")
+                Files.deleteIfExists(file)
+            }
             doLast {
                 def file = file("$outputDir/META-INF/mangomodloader/buildinfo.properties")
                 file.parentFile.mkdirs()
