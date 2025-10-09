@@ -1,4 +1,4 @@
-package org.mangorage.mixinsupport.mixin.services;
+package org.mangorage.mangomodloaderspongemixinsupport.mixin.services;
 
 import org.spongepowered.asm.service.IGlobalPropertyService;
 import org.spongepowered.asm.service.IPropertyKey;
@@ -12,10 +12,10 @@ import java.util.Map;
  * @author vectrix
  * @since 1.0.0
  */
-public final class MangoBotMixinBlackboardImpl implements IGlobalPropertyService {
+public final class MangoModLoaderMixinBlackboardImpl implements IGlobalPropertyService {
     private final Map<IPropertyKey, Object> map = new HashMap<>();
 
-    public MangoBotMixinBlackboardImpl() {
+    public MangoModLoaderMixinBlackboardImpl() {
     }
 
     public record Key(String name) implements IPropertyKey {}

@@ -13,4 +13,8 @@ public final class LoaderConstants {
     public static String getLoaderVersion() {
         return Constants.LOADER_VERSION;
     }
+
+    public static String getLoaderModId() {
+        return Constants.MOD_ID;
+    }
 }

@@ -1,8 +1,8 @@
-package org.mangorage.mixinsupport.mixin.services;
+package org.mangorage.mangomodloaderspongemixinsupport.mixin.services;
 
 import org.spongepowered.asm.service.IMixinServiceBootstrap;
 
-public final class MangoBotMixinBootstrapImpl implements IMixinServiceBootstrap {
+public final class MangoModLoaderMixinBootstrapImpl implements IMixinServiceBootstrap {
     @Override
     public String getName() {
         return "MangoBotBootstrap";

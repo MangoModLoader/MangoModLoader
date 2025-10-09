@@ -1,6 +1,6 @@
-package org.mangorage.mixinsupport.services;
+package org.mangorage.mangomodloaderspongemixinsupport.services;
 
-import org.mangorage.mixinsupport.mixin.SpongeMixinImpl;
+import org.mangorage.mangomodloaderspongemixinsupport.mixin.MangoModLoaderSpongeMixinImpl;
 import org.mangorage.loader.api.IClassTransformer;
 import org.mangorage.loader.api.TransformResult;
 import org.mangorage.loader.api.TransformerFlag;
@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.MixinEnvironment;
 
 import java.util.List;
 
-public final class SpongeMixinClassTransformerImpl implements IClassTransformer {
+public final class MangoModLoaderSpongeMixinClassTransformerImpl implements IClassTransformer {
 
     private final List<String> blacklisted = List.of(
             "java.",
@@ -16,8 +16,8 @@ public final class SpongeMixinClassTransformerImpl implements IClassTransformer 
             "org.objectweb"
     );
 
-    public SpongeMixinClassTransformerImpl() {
-        SpongeMixinImpl.load();
+    public MangoModLoaderSpongeMixinClassTransformerImpl() {
+        MangoModLoaderSpongeMixinImpl.load();
     }
 
     @Override
@@ -28,7 +28,7 @@ public final class SpongeMixinClassTransformerImpl implements IClassTransformer 
             }
         }
 
-        var transformer = SpongeMixinImpl.getTransformer();
+        var transformer = MangoModLoaderSpongeMixinImpl.getTransformer();
 
         var transformed = transformer.transformClass(
                 MixinEnvironment.getCurrentEnvironment(),
@@ -57,6 +57,6 @@ public final class SpongeMixinClassTransformerImpl implements IClassTransformer 
 
     @Override
     public String getName() {
-        return "org/mangorage/mixinsupport/mixin";
+        return "org/mangorage/mangomodloaderspongemixinsupport/mixin";
     }
 }

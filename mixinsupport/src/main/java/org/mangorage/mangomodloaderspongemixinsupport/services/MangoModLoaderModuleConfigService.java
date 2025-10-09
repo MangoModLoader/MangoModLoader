@@ -1,11 +1,11 @@
-package org.mangorage.mixinsupport.services;
+package org.mangorage.mangomodloaderspongemixinsupport.services;
 
 import org.mangorage.loader.api.IModuleConfigurator;
 import org.mangorage.loader.api.IModuleLayer;
 
 import java.util.List;
 
-public final class ModuleConfigService implements IModuleConfigurator {
+public final class MangoModLoaderModuleConfigService implements IModuleConfigurator {
     @Override
     public void configureModuleLayer(IModuleLayer moduleLayer) {
 
@@ -16,7 +16,7 @@ public final class ModuleConfigService implements IModuleConfigurator {
                         "org.spongepowered.asm.mixin.transformer"
                 ),
                 List.of(
-                        "mixinsupport",
+                        "org.mangorage.mangomodloadermixinsupport",
                         "mixinextras.common"
                 )
         );
@@ -30,7 +30,7 @@ public final class ModuleConfigService implements IModuleConfigurator {
                         "org.spongepowered.asm.transformers"
                 ),
                 List.of(
-                        "mixinsupport"
+                        "org.mangorage.mangomodloadermixinsupport"
                 )
         );
 

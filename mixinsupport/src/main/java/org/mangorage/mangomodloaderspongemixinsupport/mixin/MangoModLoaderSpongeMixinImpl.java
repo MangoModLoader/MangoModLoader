@@ -1,9 +1,9 @@
-package org.mangorage.mixinsupport.mixin;
+package org.mangorage.mangomodloaderspongemixinsupport.mixin;
 
 
 import com.llamalad7.mixinextras.MixinExtrasBootstrap;
-import org.mangorage.mixinsupport.mixin.core.MangoBotMixinServiceImpl;
-import org.mangorage.mixinsupport.mixin.services.MangoBotMixinBootstrapImpl;
+import org.mangorage.mangomodloaderspongemixinsupport.mixin.core.MangoModLoaderMixinServiceImpl;
+import org.mangorage.mangomodloaderspongemixinsupport.mixin.services.MangoModLoaderMixinBootstrapImpl;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.transformer.IMixinTransformer;
@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.transformer.IMixinTransformerFactory;
 
 import java.lang.reflect.Method;
 
-public final class SpongeMixinImpl {
+public final class MangoModLoaderSpongeMixinImpl {
     private static final boolean DEBUG = false;
 
     private static boolean loaded = false;
@@ -19,13 +19,13 @@ public final class SpongeMixinImpl {
     private static IMixinTransformer transformer;
 
     public static void setFactory(IMixinTransformerFactory factory) {
-        if (SpongeMixinImpl.factory != null) return;
-        SpongeMixinImpl.factory = factory;
+        if (MangoModLoaderSpongeMixinImpl.factory != null) return;
+        MangoModLoaderSpongeMixinImpl.factory = factory;
     }
 
     public static void prepare() {
-        if (SpongeMixinImpl.transformer != null) return;
-        SpongeMixinImpl.transformer = factory.createTransformer();
+        if (MangoModLoaderSpongeMixinImpl.transformer != null) return;
+        MangoModLoaderSpongeMixinImpl.transformer = factory.createTransformer();
     }
 
     public static IMixinTransformer getTransformer() {
@@ -45,8 +45,8 @@ public final class SpongeMixinImpl {
             System.setProperty("mixin.checks", "true");
         }
 
-        System.setProperty("mixin.bootstrapService", MangoBotMixinBootstrapImpl.class.getName());
-        System.setProperty("mixin.service", MangoBotMixinServiceImpl.class.getName());
+        System.setProperty("mixin.bootstrapService", MangoModLoaderMixinBootstrapImpl.class.getName());
+        System.setProperty("mixin.service", MangoModLoaderMixinServiceImpl.class.getName());
 
         MixinBootstrap.init();
 

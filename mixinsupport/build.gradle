@@ -55,9 +55,9 @@ extraJavaModuleInfo {
     setDeriveAutomaticModuleNamesFromFileNames(true)
     module("net.fabricmc:sponge-mixin", "org.spongepowered.mixin") {
         preserveExisting()
-        exports("org.spongepowered.asm.mixin.transformer", "mixinsupport")
-        opens("org.spongepowered.asm.mixin.transformer", "mixinsupport")
+        exports("org.spongepowered.asm.mixin.transformer", "org.mangorage.mangomodloadermixinsupport")
+        opens("org.spongepowered.asm.mixin.transformer", "org.mangorage.mangomodloadermixinsupport")
 
-        exports("org.spongepowered.asm.transformers", "mixinsupport")
+        exports("org.spongepowered.asm.transformers", "org.mangorage.mangomodloadermixinsupport")
     }
 }

@@ -1,4 +1,4 @@
-package org.mangorage.mixinsupport.mixin.core;
+package org.mangorage.mangomodloaderspongemixinsupport.mixin.core;
 
 import org.spongepowered.asm.launch.platform.container.ContainerHandleURI;
 import org.spongepowered.asm.launch.platform.container.ContainerHandleVirtual;
@@ -6,14 +6,14 @@ import org.spongepowered.asm.launch.platform.container.ContainerHandleVirtual;
 import java.nio.file.Path;
 import java.util.Map;
 
-public final class MangoBotMixinContainerImpl extends ContainerHandleVirtual {
+public final class MangoModLoaderMixinContainerImpl extends ContainerHandleVirtual {
     /**
      * Creates a new root container handle.
      *
      * @param name the name
      * @since 1.0.0
      */
-    public MangoBotMixinContainerImpl(final String name) {
+    public MangoModLoaderMixinContainerImpl(final String name) {
         super(name);
     }
 
