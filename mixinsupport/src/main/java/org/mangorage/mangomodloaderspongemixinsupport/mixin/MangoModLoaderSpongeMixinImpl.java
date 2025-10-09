@@ -3,7 +3,6 @@ package org.mangorage.mangomodloaderspongemixinsupport.mixin;
 
 import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 import org.mangorage.mangomodloaderspongemixinsupport.mixin.core.MangoModLoaderMixinServiceImpl;
-import org.mangorage.mangomodloaderspongemixinsupport.mixin.services.MangoModLoaderMixinBootstrapImpl;
 import org.spongepowered.asm.launch.MixinBootstrap;
 import org.spongepowered.asm.mixin.MixinEnvironment;
 import org.spongepowered.asm.mixin.transformer.IMixinTransformer;
@@ -45,7 +44,6 @@ public final class MangoModLoaderSpongeMixinImpl {
             System.setProperty("mixin.checks", "true");
         }
 
-        System.setProperty("mixin.bootstrapService", MangoModLoaderMixinBootstrapImpl.class.getName());
         System.setProperty("mixin.service", MangoModLoaderMixinServiceImpl.class.getName());
 
         MixinBootstrap.init();

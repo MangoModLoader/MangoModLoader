@@ -20,7 +20,7 @@ public class MangoModLoaderMixinLoggerImpl extends LoggerAdapterAbstract {
 
     @Override
     public String getType() {
-        return "MangoBot Mixin Logger";
+        return "MangoModLoader Mixin Logger";
     }
 
     @Override
@@ -47,9 +47,7 @@ public class MangoModLoaderMixinLoggerImpl extends LoggerAdapterAbstract {
 
     @Override
     public <T extends Throwable> T throwing(T t) {
-        System.out.println(t);
-        t.printStackTrace();
-        return null;
+        throw new IllegalStateException(t);
     }
 }
 

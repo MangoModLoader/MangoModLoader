@@ -1,6 +1,7 @@
 package org.mangorage.loader;
 
 import com.google.gson.Gson;
+import org.mangorage.loader.api.mod.Environment;
 import org.mangorage.loader.internal.Constants;
 import org.mangorage.loader.internal.JPMSGameClassloader;
 import org.mangorage.loader.internal.util.Util;
@@ -108,8 +109,18 @@ public final class Loader {
         return Path.of(userHome).resolve(".minecraft");
     }
 
+    public static void scanArgs(String[] args) {
+        for (String arg : args) {
+            if (arg.contains("--mml.server")) {
+                Constants.ENV = Environment.SERVER;
+            }
+        }
+    }
 
     public static void init(String[] args, ModuleLayer parent) throws IOException {
+        Constants.ENV = Environment.CLIENT;
+        scanArgs(args);
+
         final var dialog = new WorkingDialog();
 
         try {
@@ -212,48 +223,53 @@ public final class Loader {
 
             Thread.currentThread().setContextClassLoader(classloader);
 
-            final var joinedModule = moduleLayer.findModule(GAME_MODULE).get();
-            final var lwjglModule = moduleLayer.findModule("org.lwjgl").get();
+            // Handle Client side add Reads/Opens
+            if (Constants.ENV == Environment.CLIENT) {
+                final var joinedModule = moduleLayer.findModule(GAME_MODULE).get();
+                final var lwjglModule = moduleLayer.findModule("org.lwjgl").get();
 
-            moduleLayerController.addReads(joinedModule, lwjglModule);
-            moduleLayerController.addOpens(lwjglModule, "org.lwjgl.system", joinedModule);
+                moduleLayerController.addReads(joinedModule, lwjglModule);
+                moduleLayerController.addOpens(lwjglModule, "org.lwjgl.system", joinedModule);
+            }
 
             classloader.load(moduleLayer, moduleLayerController);
 
             ModLoader.loadMods(moduleLayer);
 
-            final var clazz = Class.forName("net.minecraft.client.main.Main", false, Thread.currentThread().getContextClassLoader());
+            Class<?> clazz;
 
-            String[] MCargs = {
-                    "--username", "MangoRage",
-                    "--version", "MangoModLoader " + Constants.MINECRAFT_VERSION + " Loader " + Constants.LOADER_VERSION,
-                    "--assetIndex", "5",
-                    "--uuid", "94b5df2e-2b64-10ed-0007-040300000000",
-                    "--clientId", "null",
-                    "--xuid", "null",
-                    "--userType", "mojang",
-                    "--versionType", "release",
-                    "--width", "925",
-                    "--height", "530",
-                    "--accessToken", "none"
-            };
+            if (Constants.ENV == Environment.CLIENT) {
+                clazz = Class.forName("net.minecraft.client.main.Main", false, Thread.currentThread().getContextClassLoader());
+                // TODO: Make our built in Gradle plugin responsible for handling args... eventually
+                if (args.length == 0)
+                    args = new String[] {
+                            "--username", "MangoRage",
+                            "--version", "MangoModLoader " + Constants.MINECRAFT_VERSION + " Loader " + Constants.LOADER_VERSION,
+                            "--assetIndex", "5",
+                            "--uuid", "94b5df2e-2b64-10ed-0007-040300000000",
+                            "--clientId", "null",
+                            "--xuid", "null",
+                            "--userType", "mojang",
+                            "--versionType", "release",
+                            "--width", "925",
+                            "--height", "530",
+                            "--accessToken", "none"
+                    };
+            } else {
+                clazz = Class.forName("net.minecraft.server.Main", false, Thread.currentThread().getContextClassLoader());
+            }
 
             dialog.setText("Loading Game...");
             dialog.close();
 
             try {
-                clazz.getMethod("main", String[].class).invoke(null, args.length == 0 ? (Object) MCargs : (Object) args);
+                clazz.getMethod("main", String[].class).invoke(null, (Object) args);
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new IllegalStateException(e);
             }
 
         } catch (Throwable e) {
-            e.printStackTrace();
-
-            dialog.setText("Something went wrong...");
-            FileWriter writer = new FileWriter("Test.txt");
-            writer.write(e.getLocalizedMessage());
-            writer.flush();
+            throw new IOException(e);
         }
     }
 }

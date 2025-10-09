@@ -1,5 +1,6 @@
 package org.mangorage.loader.api;
 
+import org.mangorage.loader.api.mod.Environment;
 import org.mangorage.loader.internal.Constants;
 
 /**
@@ -16,5 +17,9 @@ public final class LoaderConstants {
 
     public static String getLoaderModId() {
         return Constants.MOD_ID;
+    }
+
+    public static Environment getSide() {
+        return Environment.CLIENT;
     }
 }

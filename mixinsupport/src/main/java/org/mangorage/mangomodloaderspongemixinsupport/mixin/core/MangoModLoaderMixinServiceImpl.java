@@ -1,5 +1,6 @@
 package org.mangorage.mangomodloaderspongemixinsupport.mixin.core;
 
+import org.mangorage.loader.api.LoaderConstants;
 import org.mangorage.mangomodloaderspongemixinsupport.mixin.MangoModLoaderSpongeMixinImpl;
 import org.mangorage.mangomodloaderspongemixinsupport.mixin.services.MangoModLoaderMixinLoggerImpl;
 import org.mangorage.loader.api.IMangoLoader;
@@ -29,11 +30,11 @@ import java.util.List;
 
 public final class MangoModLoaderMixinServiceImpl implements IMixinService, IClassProvider, IClassBytecodeProvider, ITransformerProvider, IClassTracker {
     private final ReEntranceLock lock = new ReEntranceLock(1);
-    private final MangoModLoaderMixinContainerImpl container = new MangoModLoaderMixinContainerImpl("mangobot");
+    private final MangoModLoaderMixinContainerImpl container = new MangoModLoaderMixinContainerImpl("mangomodloadermixin");
 
     @Override
     public String getName() {
-        return "MangoBotMixinService";
+        return "MangoModLoaderMixinService";
     }
 
     @Override
@@ -125,7 +126,7 @@ public final class MangoModLoaderMixinServiceImpl implements IMixinService, ICla
 
     @Override
     public String getSideName() {
-        return MixinEnvironment.Side.SERVER.name();
+        return LoaderConstants.getSide().name();
     }
 
     @Override
